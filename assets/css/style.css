@@ -348,7 +348,15 @@ table tr, table tr th, td {
     padding: 20px 20px;
     text-align: center;
 }
-
+.allgender-age thead tr th , .allgender-age tbody tr td {
+    border: 1px solid #ddd;
+    color: #555;
+    font-size: 16px;
+    padding: 20px 20px;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+}
 .form-input-custom {
     width: 100%;
     padding: 12px 20px;
@@ -383,3 +391,31 @@ table tr, table tr th, td {
 .cropimg {
     position: relative;
 }
+/**   
+ hover effect
+*/
+.hover-effect1 { min-height: 200px;  text-align: center; }
+.hover-effect1 ul li { display: inline-block; }
+.hover-effect1 ul li a { 
+    color: #fff; 
+    line-height: 100px;
+    display: inline-block; 
+    width: 100px;
+    -webkit-transition: all 1.3s ease;
+    -moz-transition: all 1.3s ease; -ms-transition: all 1.3s ease;
+    -o-transition: all 1.3s ease; transition: all 1.3s ease; 
+    border-radius: 50%; 
+    box-shadow: 0 16px 34px 7px rgba(121, 121, 121, .1);
+}
+.hover-effect1 ul li:hover a { 
+    border-radius: 20%;
+    -moz-transform: rotate(360deg); 
+    -webkit-transform: rotate(360deg); 
+    -o-transform: rotate(360deg); 
+    -ms-transform: rotate(360deg); 
+    transform: rotate(360deg); 
+    box-shadow: none;
+}
+  /**   
+    hover effect
+*/

@@ -41,16 +41,18 @@
                     </div>
                 </div>
 
-                <div class="gender-list my-4">
-                <ul>
-                    <li> <a class='men' href=""> ชาย </a></li>
-                    <li> <a class='women' href=""> หญิง </a></li>
-                    <li> <a class='gay' href=""> เกย์ </a></li>
-                    <li> <a class='genall' href=""> สาว 2 </a></li>
-                    <li> <a class='tom' href=""> ทอม </a></li>
-                    <li> <a class='less' href=""> เลส </a></li>
-                    <li> <a class='indy' href=""> ดี้ </a></li>
-                </ul>
+                <div class="gender-list my-4 ">
+                    <div class='hover-effect1'>
+                        <ul>
+                            <li> <a class='hover-fx men' href=""> ชาย </a></li>
+                            <li> <a class='hover-fx women' href=""> หญิง </a></li>
+                            <li> <a class='hover-fx gay' href=""> เกย์ </a></li>
+                            <li> <a class='hover-fx genall' href=""> สาว 2 </a></li>
+                            <li> <a class='hover-fx tom' href=""> ทอม </a></li>
+                            <li> <a class='hover-fx less' href=""> เลส </a></li>
+                            <li> <a class='hover-fx indy' href=""> ดี้ </a></li>
+                        </ul>
+                </div>
                 </div>
 
                 <div class="row">
@@ -264,40 +266,51 @@
         </div>
     </div>
     <div class="row py-3 ">
-        <table class='w-100 '>
+        <table class='w-100 allgender-age'>
             <thead>
                 <tr>
                     <th>อายุ</th>
-                    <th>หญิง</th>
-                    <th>ชาย</th>
-                    <th>สาวสอง</th>
-                    <th>เกย์</th>
-                    <th>ดี้</th>
-                    <th>ทอม</th>
-                    <th>เลสเบี้ยน</th>
+                    <?php while ($gname = mysqli_fetch_assoc($sql_gendername)) { ?>
+                        <th><?php echo $gname['Gender_name']; ?></th>
+                    <?php } ?>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>18-24 ปี</td>
-                    <?php while ($r = mysqli_fetch_assoc($qrage1824)) {?>
-                    <td><?php echo $r['count'] ?></td>
-                    <?php }?>
+                    <?php foreach ($data1824 as $key => $value) {
+                     echo "<td>".(($value == "0")? " " :$value)."</td>";
+                    }?>
                 </tr>
                 <tr>
                     <td>25-34 ปี</td>
+                     <?php foreach ($data2534 as $key => $value) {
+                     echo "<td>".(($value == "0")? " " :$value)."</td>";
+                    }?>
                 </tr>
                 <tr>
                     <td>35-44 ปี</td>
+                     <?php foreach ($data3544 as $key => $value) {
+                     echo "<td>".(($value == "0")? " " :$value)."</td>";
+                    }?>
                 </tr>
                 <tr>
                     <td>45-54 ปี</td>
+                     <?php foreach ($data4554 as $key => $value) {
+                     echo "<td>".(($value == "0")? " " :$value)."</td>";
+                    }?>
                 </tr>
                 <tr>
                     <td>55-64 ปี</td>
+                     <?php foreach ($data5564 as $key => $value) {
+                     echo "<td>".(($value == "0")? " " :$value)."</td>";
+                    }?>
                 </tr>
                 <tr>
                     <td>65 ปีขึ้นไป</td>
+                     <?php foreach ($data65up as $key => $value) {
+                     echo "<td>".(($value == "0")? " " :$value)."</td>";
+                    }?>
                 </tr>
             </tbody>
         </table>
@@ -308,7 +321,7 @@
 <div class="container my-3">
     <div class="row dot_bt">
         <div class="col text-center  pb-2">
-            <h2 class='d-inline-block mb-0'>เรามีเพื่อนอยู่ทุกจังหวัด</h2>
+            <h2 class='d-inline-block mb-0 py-2'>เรามีเพื่อนอยู่ทุกจังหวัด</h2>
             <small >เลือกเพื่อนตามจังหวัดที่คุณต้องการได้เลย</small>
         </div>
     </div>
