@@ -14,16 +14,9 @@
                         <td class='left-td'>รูปโปรไฟล์</td>
                         <td  class='right-td'>
                             <div class="cropimg">
-                                <?php /* $image = base64_encode(file_get_contents('assets/uploads/1605888988.png')); */?>
-                                <!-- <img src="data:image/png;base64,<?php/* echo$image; */?>"> -->
-                                <img src="" alt="" id='img' width="100">
-                                <div class="btn-upload d-none float-right">
-                                <div id="status"></div>
-                                    <input readonly type="file" name='image' id='file' class="img-upload-input-bs" editor="#img-upload-panel" target="#image" status="#status" passurl="api/api.php" pshape="circle" w=100 h=100 size="{150,150}"/>
-                                    <img src="" alt="" id="image"/>
-                                </div>
-
+                                <img  id='user_img' alt="" class='w-100'>
                             </div>
+                            <button class="btn-custom1 float-right  btn-upload d-none" data-toggle="modal" data-target="#Upload" >อัปเดต</button>
                         </td>
                     </tr>
                     <tr>
@@ -90,42 +83,33 @@
             </div>
             <div class="row  p-3">
                 <div class="col">
-                    <button class='btn-custom1 btn-back d-none'><i class="fas fa-cog"></i> ย้อนกลับ</button>
+                    <button class='btn-custom1 btn-back1 d-none'><i class="fas fa-cog"></i> ย้อนกลับ</button>
                     <button class='btn-custom1 float-right btn-edit-profile'><i class="fas fa-edit"></i> แก้ไขข้อมูลบัญชี</button>
                     <button class='btn-custom1 float-right btn-save-profile d-none' uid=''>บันทึก</button>
                 </div>
             </div>
 
                 <!-- modal -->
-    <div class="modal fade" id="img-upload-panel">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="Upload">
+        <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Upload Profile Photo</h4>
-                <button type="button" class="img-remove-btn-bs close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="row container">
-                <div class="col">
-                    <div class="img-edit-container"></div>
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload Profile Photo</h4>
                 </div>
-                </div>
-                <div class="row container">
-                    <div class="col">
-                        <button type="button" class="btn btn-dark img-rotate-left"> <i class="fas fa-undo"></i> Rotate Left</button>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-dark img-clear-filter">Clear</button>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-dark img-rotate-right"><i class="fas fa-redo"></i> Rotate Right</button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col text-center p-5">
+                            <img src='assets/image/avatar.png' alt="" class='img-preview my-3 border' width="200px">
+                            <form action="" class='save-img' enctype="multipart/form-data">
+                                <input type="file" name='fileupload' id='cutsomFile'></div>
+                                <button type='submit' class="btn-custom1  float-right py-2 px-3">บันทึก</button>
+                            </form>
+                        </div>
+                        <div class="col">
+                       
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary img-remove-btn-bs">Close</button>
-                <button type="button" class="btn btn-primary img-upload-btn-bs">Upload</button>
-            </div>
             </div>
         </div>
     </div>

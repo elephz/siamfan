@@ -389,12 +389,16 @@ table tr, table tr th, td {
 }
 
 .cropimg {
-    position: relative;
+    border:1px solid #eee;
+    width: 100px;
+    display: inline-block;
 }
+
+
 /**   
  hover effect
 */
-.hover-effect1 { min-height: 200px;  text-align: center; }
+.hover-effect1 {   text-align: center; }
 .hover-effect1 ul li { display: inline-block; }
 .hover-effect1 ul li a { 
     color: #fff; 

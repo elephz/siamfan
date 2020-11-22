@@ -44,13 +44,13 @@
                 <div class="gender-list my-4 ">
                     <div class='hover-effect1'>
                         <ul>
-                            <li> <a class='hover-fx men' href=""> ชาย </a></li>
-                            <li> <a class='hover-fx women' href=""> หญิง </a></li>
-                            <li> <a class='hover-fx gay' href=""> เกย์ </a></li>
-                            <li> <a class='hover-fx genall' href=""> สาว 2 </a></li>
-                            <li> <a class='hover-fx tom' href=""> ทอม </a></li>
-                            <li> <a class='hover-fx less' href=""> เลส </a></li>
-                            <li> <a class='hover-fx indy' href=""> ดี้ </a></li>
+                            <li> <a class='hover-fx men' href="search?g=men"> ชาย </a></li>
+                            <li> <a class='hover-fx women' href="search?g=women"> หญิง </a></li>
+                            <li> <a class='hover-fx gay' href="search?g=gay"> เกย์ </a></li>
+                            <li> <a class='hover-fx genall' href="search?g=genall"> สาว 2 </a></li>
+                            <li> <a class='hover-fx tom' href="search?g=tom"> ทอม </a></li>
+                            <li> <a class='hover-fx less' href="search?g=less"> เลส </a></li>
+                            <li> <a class='hover-fx indy' href="search?g=indy"> ดี้ </a></li>
                         </ul>
                 </div>
                 </div>
@@ -73,7 +73,7 @@
                 <div class="row contact my-5 text-center">
                     <div class="col-md-3 col-sm-6">
                         <div class="shadow">
-                            <a href="">
+                            <a href="search?social=line">
                                 <img class='pb-3' src="assets/image/line.png" alt="" width="75px">
                                 <h5>เพื่อนที่มีไลน์</h5>
                             </a>
@@ -81,7 +81,7 @@
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="shadow">
-                            <a href="">
+                            <a href="search?social=facebook">
                                 <img class='pb-3' src="assets/image/facebook.png" alt="" width="75px">
                                 <h5>เพื่อนที่มีเฟซบุ๊ก</h5>
                             </a>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="shadow">
-                            <a href="">
+                            <a href="search?social=phone">
                                 <img class='pb-3' src="assets/image/phone-call.png" alt="" width="75px">
                                 <h5>เพื่อนที่มีเบอร์โทร</h5>
                             </a>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="shadow">
-                            <a href="">
+                            <a href="search?t=search">
                                 <img class='pb-3' src="assets/image/search.png" alt="" width="75px">
                                 <h5>ค้นหาเพื่อน</h5>
                             </a>
@@ -251,7 +251,7 @@
     <div class="row py-3 grid-4">
     <?php while ($target = mysqli_fetch_assoc($select_target)) {?>
         <div class="grid4-item">
-            <button type="button" class="btn btn-custom p-2 p-4"> <h4 class='d-inline f-16'><?php if ($target['u_Target_id'] != 0) {echo $target['Target_name'] . '(' . $target['count'] . ')';} else {echo "";}?></h4> </button>
+            <a href='search?target=<?php echo $target['u_Target_id']; ?>' type="button" class="btn btn-custom p-2 p-4"> <h4 class='d-inline f-16'><?php if ($target['u_Target_id'] != 0) {echo $target['Target_name'] . '(' . $target['count'] . ')';} else {echo "";}?></h4> </a>
         </div>
     <?php }?>
     </div>

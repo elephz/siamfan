@@ -1,6 +1,12 @@
 <?php
 include "api/config.php";
 exit;
+$sql = mysqli_query($con, " SELECT User_id FROM `tb_user`");
+while ($row = mysqli_fetch_assoc($sql)) {
+	$users = $row['User_id'];
+	mysqli_query($con,"INSERT INTO tb_privacy(User_id) VALUES ('$users')");
+}
+
 for ($i = 1; $i <= 120; $i++) {
 	$land = (rand(1, 77));
 	$land2 = (rand(1, 120));
@@ -15,7 +21,7 @@ if ($sql) {
 	echo "ok";
 }
 
-$sql = mysqli_query($con, " SELECT * FROM `tb_user` WHERE (User_id % 3 = 0) AND line_id IS  NUll ORDER BY `User_id` ASC");
+$sql = mysqli_query($con, " SELECT * FROM `tb_user` INNER JOIN  WHERE (User_id % 3 = 0) AND line_id IS  NUll ORDER BY `User_id` ASC");
 
 $sql1 = mysqli_query($con, " SELECT User_id FROM `tb_user` WHERE u_Gender_id  = 0");
 

@@ -16,6 +16,7 @@
 </head>
 <body>
 <?php include "compostion/header.php";?>
+<?php if($login){ ?>
 <div class="container">
     <div class="row">
         <div class="col-md-3 col-sm-12 p-2">
@@ -45,3 +46,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js" integrity="sha512-MqEDqB7me8klOYxXXQlB4LaNf9V9S0+sG1i8LtPOYmHqICuEZ9ZLbyV3qIfADg2UJcLyCm4fawNiFvnYbcBJ1w==" crossorigin="anonymous"></script>
 <script src="assets/script/profile.js"></script>
 </html>
+<?php } ?>

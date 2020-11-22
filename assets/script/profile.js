@@ -1,119 +1,16 @@
-// $(document).ready(function () {
-//     getdata();
 
-//     function getgender(id) {
-//         id = Number(id);
-//         data = { action: "get-gender" }
-//         let text = "";
-//         $.post("api/api.php", data, function (res) {
-//             console.log(res)
-//             let ps = $.parseJSON(res);
-//             let data = ps.respond;
-//             let rows = "";
-//             $.each(data, function (k, v) {
-//                 rows += " <option value='" + v.Gender_id + "' " + ((id == Number(v.Gender_id)) ? "selected" : "") + ">" + v.Gender_name + "</option></option>"
-//             });
-//             text = "<select class='form-control' >" + rows + "</select>";
-//             //$("#sp_genderid").html(text);
-//         });
-//     }
-//     function getdata() {
-//         data = { currentjs_id, action: "get-one-person" }
-//         $.post("api/api.php", data, function (res) {
-//             let ps = $.parseJSON(res);
-//             let rows;
-//             let mid;
-//             let data = ps.respond;
-//             let id = data.User_id;
-//             id = Number(id);
-//             if (id < 10) {
-//                 mid = "M000" + id;
-//             } else if (id < 100) {
-//                 mid = "M00" + id;
-//             } else if (id < 1000) {
-//                 mid = "M0" + id;
-//             }
-
-//             rows +=
-// "<tr>" +
-//     "<td class='left-td'>รหัสสมาชิก</td>" +
-//     "<td  class='right-td'> " + mid + "</input></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>รูปโปรไฟล์</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + data.img + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>ชื่อ</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + data.Name + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>เพศ</td>" +
-//     "<td  class='right-td'> <span id='sp_genderid' gid='" + data.Gender_id + "'></span></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>อายุ</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + data.age + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>แนะนำตัว</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + ((data.Description == null) ? "" : data.Description) + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>จังหวัด</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + data.u_Province_id + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>กำลังมองหา</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + data.u_Target_id + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>เบอร์โทร</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + ((data.phone == null) ? "" : data.phone) + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>อีเมล์</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + ((data.e_mail == null) ? "" : data.e_mail) + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>ไอดีไลน์</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + ((data.line_id == null) ? "" : data.line_id) + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>เฟซบุ๊ค</td>" +
-//     "<td  class='right-td'> <input class='input-pf noline' value='" + ((data.facebook == null) ? "" : data.facebook) + "' ></td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>ลิ๊งค์โปรไฟล์</td>" +
-//     "<td  class='right-td'> " + data.img + "</td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>เข้าร่วมเมื่อ</td>" +
-//     "<td  class='right-td'> " + data.created_date + "</td>" +
-//     "</tr>" +
-//     "<tr>" +
-//     "<td class='left-td'>สถานะบัญชีผู้ใช้</td>" +
-//     "<td  class='right-td'> " + data.img + "</td>" +
-//     "</tr>";
-//             $("#td-profile").html(rows);
-//         }).then(() => {
-//             let gid = $("#sp_genderid").attr("gid");
-//             let aa = getgender(2);
-//             $("#sp_genderid").html(aa);
-//         });
-//     }
 
 $("body").on("click", ".btn-edit-profile", function (e) {
     $(this).addClass('d-none').removeClass('d-inline-block');
     $(".input-pf").removeClass("noline").addClass('addling');
-    $(".btn-back").removeClass("d-none").addClass('d-inline-block');
+    $(".btn-back1").removeClass("d-none").addClass('d-inline-block');
     $(".btn-upload").removeClass("d-none").addClass('d-inline-block');
     $(".btn-save-profile").removeClass("d-none").addClass('d-inline-block');
     $(".input-pf").removeAttr("readonly")
     $(".custom-select").removeAttr("disabled")
 });
 
-$("body").on("click", ".btn-back", function (e) {
+$("body").on("click", ".btn-back1", function (e) {
     $(this).addClass('d-none').removeClass('d-inline-block');
     $(".input-pf").addClass("noline").removeClass('addling');
     $(".btn-edit-profile").addClass("d-inline-block").removeClass('d-none');
@@ -123,6 +20,19 @@ $("body").on("click", ".btn-back", function (e) {
     $(".custom-select").attr("disabled", true)
 });
 // });
+$("body").on("change", "#cutsomFile", function (e) {
+    readURL(this);
+});
+function readURL(input){
+    if(input.files && input.files[0]){
+        var reader = new FileReader();
+
+        reader.onload = function(e){
+            $('.img-preview').attr('src',e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 $("body").on("click", ".btn-edit-password", function (e) {
     e.preventDefault();
     let val1 = $("#ed-password1").val();
@@ -190,6 +100,7 @@ $("body").on("click", ".btn-pvc", function (e) {
     let pvc_line = $("#sl-line").val();
     let pvc_facebook = $("#sl-facebook").val();
     let pvc_phone = $("#sl-phone").val();
+    let pvc_img = $("#sl-img").val();
     currentjs_id
     data = {
         currentjs_id,
@@ -197,6 +108,7 @@ $("body").on("click", ".btn-pvc", function (e) {
         pvc_facebook,
         pvc_phone,
         pvc_email,
+        pvc_img,
         action: "edit_pvc"
     }
     $.ajax({
@@ -212,6 +124,24 @@ $("body").on("click", ".btn-pvc", function (e) {
             }
         }
     });
+});
+$("body").on("click", ".logout", function (e) {
+    e.preventDefault();
+    console.log("ddd");
+    swal({
+        title: "ต้องการออกจากระบบ?",
+        text: "",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true
+    },
+        function () {
+            setTimeout(function () {
+                window.location.href = 'logout.php';
+            }, 500);
+        }
+    );
 });
 $("body").on("click", ".btn-save-profile", function (e) {
     console.log("ddd");
@@ -307,56 +237,72 @@ var Set_select = function Set_select() {
         }
     });
 }
-$("body").on("submit", "#form-uploads-img", function (e) {
+$("body").on("submit", ".save-img", function (e) {
     e.preventDefault();
-    console.log($('#status'));
+    var fsize = $('#cutsomFile')[0].files[0].size; //get file size
+    var ftype = $('#cutsomFile')[0].files[0].type; // get file type
     var fd = new FormData();
-    fd.append('image', $('#file2')[0].files[0]);
+    fd.append('image', $('#cutsomFile')[0].files[0]);
     fd.append('action', "uploads-img");
-    console.log(fd);
-    $.ajax({
-        url: 'api/api.php',
-        type: 'post',
-        data: fd,
-        dataType: "html",
-        contentType: false,
-        processData: false,
-        success: function (response) {
-            if (response != 0) {
-                $("#img").attr("src", response);
-                $(".preview img").show(); // Display image element
-            } else {
-                alert('file not uploaded');
-            }
-        },
-    })
-
-});
-function submitform() {
-
-    $("body").on("submit", "#form-uploads-img", function (e) {
-        e.preventDefault();
-        var fd = new FormData();
-        fd.append('image', $('#file')[0].files[0]);
-        fd.append('action', "uploads-img");
-        console.log(fd);
-        $.ajax({
-            url: 'api/api.php',
-            type: 'post',
-            data: fd,
-            dataType: "html",
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                if (response != 0) {
-                    $("#img").attr("src", response);
-                    $(".preview img").show(); // Display image element
-                } else {
-                    alert('file not uploaded');
+        if(checkfiletypesize(ftype,fsize)){
+            $.ajax({
+                url: 'api/api.php',
+                type: 'post',
+                data: fd,
+                dataType: "html",
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    let rp = $.parseJSON(response);
+                    if (rp.status == true) {
+                        console.log("ok?");
+                        console.log(rp);
+                        swal("", "บันทึกสำเร็จ", "success");
+                        $("#user_img").attr("src", "");
+                        $("#user_img").attr("src", "assets/uploads/"+rp.respond);
+                        setTimeout(function () {
+                          $('#Upload').modal('hide');
+                        }, 500);
+                    } else {
+                        
+                    }
                 }
-            },
-        })
-    });
+            })
+        }else{
+            return
+        }
+        
+       
+       
+       
+});
+
+
+function checkfiletypesize(ftype,fsize){
+    switch (ftype){
+            case 'image/png':
+            case 'image/gif':
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                break;
+            default:
+                swal("","ชนิดไฟล์ไม่ถูกต้อง","error")
+                return false
+        }
+
+        //Allowed file size is less than 1 MB (1048576)
+        if (fsize > 1048576)    {
+            swal("","ขนาดไฟล์ภาพต้องไม่เกิน 1 MB","error")
+            return false
+        }
+        return true
+}
+function bytesToSize(bytes) {
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes == 0)
+        return '0 Bytes';
+    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 }
 var getdata = function getdata() {
     var monthNamesThai = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤษจิกายน", "ธันวาคม"];
@@ -379,6 +325,12 @@ var getdata = function getdata() {
                 mid = "M0" + value.User_id;
             }
             var d = new Date(value.created_date);
+            let imgname ;
+            if(value.img == null){
+                 imgname = "assets/image/avatar.png";
+            }else{
+                imgname = "assets/uploads/"+value.img;
+            }
             // Set Data\
             $('#img').attr('src', ((value.img == null) ? "assets/image/avatar.png" : value.img));
             $("#User_id").text(mid)
@@ -407,6 +359,8 @@ var getdata = function getdata() {
             $("#sl-line").val(value.pvc_line);
             $("#sl-facebook").val(value.pvc_facebook);
             $("#sl-phone").val(value.pvc_phone);
+            $("#sl-img").val(value.pvc_img);
+            $("#user_img").attr("src", imgname);
         }
     });
 }

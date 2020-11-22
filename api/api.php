@@ -38,7 +38,7 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 	} else if ($_POST['action'] == "get-one-person") {
 		$id = $con->real_escape_string($_POST['currentjs_id']);
 		// ความจริงต้องเป็น inner join แต่บางบัญชีก็ไม่มีเพราะไม่ได้สมัครเองทั้งหมด
-		$sql = "SELECT * FROM `tb_user` LEFT JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id WHERE tb_user.User_id='$id'";
+		$sql = "SELECT * FROM `tb_user` INNER JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id WHERE tb_user.User_id='$id'";
 		$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
 		$row = mysqli_fetch_assoc($qr);
 
@@ -111,25 +111,27 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 		} else {
 			error();
 		}
-	} else if (isset($_POST['name']) && isset($_POST['image'])) {
-		error_reporting(E_ERROR | E_PARSE);
-		$img = $_POST['image'];
-		$image_array_1 = explode(";", $img);
-		$image_array_2 = explode(",", $image_array_1[1]);
-		$data = base64_decode($image_array_2[1]);
-		$image_name = '../assets/uploads/' . time() . '.png';
-		file_put_contents($image_name, $data);
+	} 
+	// else if (isset($_POST['name']) && isset($_POST['image'])) {
+	// 	error_reporting(E_ERROR | E_PARSE);
+	// 	$img = $_POST['image'];
+	// 	$image_array_1 = explode(";", $img);
+	// 	$image_array_2 = explode(",", $image_array_1[1]);
+	// 	$data = base64_decode($image_array_2[1]);
+	// 	$image_name = '../assets/uploads/' . time() . '.png';
+	// 	file_put_contents($image_name, $data);
 
-		$id = $_SESSION["User_id"];
-		$sql = "UPDATE  `tb_user` SET img = '$img' WHERE `User_id`='$id' ";
-		$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
-		$row = mysqli_fetch_assoc($qr);
-		if ($qr) {
-			echo $image_name;
-		} else {
-			error();
-		}
-	} else if ($_POST['action'] == "edit_username") {
+	// 	$id = $_SESSION["User_id"];
+	// 	$sql = "UPDATE  `tb_user` SET img = '$img' WHERE `User_id`='$id' ";
+	// 	$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+	// 	$row = mysqli_fetch_assoc($qr);
+	// 	if ($qr) {
+	// 		echo $image_name;
+	// 	} else {
+	// 		error();
+	// 	}
+	// } 
+	else if ($_POST['action'] == "edit_username") {
 		$id = $con->real_escape_string($_POST['currentjs_id']);
 		$val = $con->real_escape_string($_POST['val']);
 		$sql = "UPDATE  `tb_user` SET `User_name` = '$val' 	WHERE `User_id` = '$id'";
@@ -155,16 +157,118 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 		$pvc_email = $con->real_escape_string($_POST['pvc_email']);
 		$pvc_phone = $con->real_escape_string($_POST['pvc_phone']);
 		$id = $con->real_escape_string($_POST['currentjs_id']);
+		$pvc_img = $con->real_escape_string($_POST['pvc_img']);
 		$sql = "UPDATE  `tb_privacy` SET
 				`pvc_line` = '$pvc_line',
 				`pvc_phone` = '$pvc_phone',
 				`pvc_email` = '$pvc_email',
-				`pvc_facebook` = '$pvc_facebook'
+				`pvc_facebook` = '$pvc_facebook',
+				`pvc_img` = '$pvc_img'
 				WHERE `User_id` = '$id'";
 		$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
 		if ($qr) {
 			success();
 		} else {
+			error();
+		}
+	}else if ($_POST['action'] == "uploads-img") {
+		$id = $_SESSION["User_id"];
+		$sqlimg = mysqli_query($con,"SELECT img FROM tb_User WHERE User_id = '$id'");
+		$row = mysqli_fetch_assoc($sqlimg);
+
+		if($row['img'] != null){
+			$imgname = $row['img'];
+			$part = '../assets/uploads/'.$imgname;
+			unlink($part);
+		}
+	
+		$upload = $_FILES['image'];
+		if($upload <> ''){
+			$path = '../assets/uploads/';
+			$type = strrchr($_FILES['image']['name'],".");
+			$file_tmp = $_FILES['image']['tmp_name'];
+			$newname = time().rand(1,99).$type;
+			$parth_comy = $path.$newname;
+			if(move_uploaded_file($file_tmp,$parth_comy)){
+				$sql = "UPDATE  `tb_user` SET img = '$newname' WHERE `User_id`='$id' ";
+				$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+				if ($qr) {
+					success($newname);
+				} else {
+					error();
+				}
+			}
+
+		}else{
+			error("nohaveimg");
+		}
+	}else if ($_POST['action'] == "select-all-user") {
+		
+		
+		$filter = " ";
+		if(isset($_POST['fil'])){
+			$fil = $_POST['fil'];
+			$filter = " ";
+			
+			$text = $con->real_escape_string($fil['text']);
+			$socail = $con->real_escape_string($fil['socail']);
+			$gender = $con->real_escape_string($fil['gender']);
+			$age_f = $con->real_escape_string($fil['age_first']);
+			$age_l = $con->real_escape_string($fil['age_last']);
+			$province = $con->real_escape_string($fil['province']);
+			$target = $con->real_escape_string($fil['target']);
+			$text = "%".$text."%";
+			
+			
+			$newsocial;
+			$arrsocial = ['facebook' => 'facebook' ,'phone' => 'phone' ,'line' => 'line_id'  ];
+			foreach($arrsocial as $key => $val){
+				if($socail == $key){
+					$newsocial = "tb_User.".$val;
+				}
+			}
+			$filtered_get = array_filter($fil);
+			if(empty($filtered_get)){
+				$filter = " tb_User.Users_id > 0 ";
+			}
+			$i = 1;
+			$amount = count($filtered_get);
+			foreach($filtered_get as $key => $val){
+				if($key == 'text'){ $val = "%".$val."%" ; $filter .="tb_User.User_name LIKE '$val'" ;}
+				if($key == 'socail'){ $filter .="$newsocial IS NOT NULL" ;}
+				if($key == 'age_first'){ $filter .="tb_User.age > '$val'" ;}
+				if($key == 'age_last'){ $filter .="tb_User.age < '$val'" ;}
+				if($key == 'province'){ $filter .="tb_User.u_Province_id = '$val'" ;}
+				if($key == 'target'){ $filter .="tb_User.u_Target_id = '$val'" ;}
+				if($key == 'gender'){ $filter .="tb_User.u_Gender_id = '$val'" ;}
+				if ( $amount != $i) { 
+					$filter .= " AND ";
+				 }
+			 $i++;
+			}
+		}
+		
+		
+		$count = mysqli_query($con,"SELECT * FROM tb_User ") or die('error. ' . mysqli_error($con));
+		$amount = $count->num_rows;
+		$oneuser = "SELECT * FROM tb_User 
+						INNER JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id 
+						LEFT JOIN tb_gender ON tb_user.u_Gender_id = tb_gender.Gender_id 
+						LEFT JOIN tb_target ON tb_user.u_Target_id = tb_target.Target_id 
+						LEFT JOIN tb_province ON tb_user.u_Province_id = tb_province.Province_id 
+						WHERE $filter
+					ORDER BY RAND () LIMIT 0,30";
+	
+		
+		$sql = mysqli_query($con,$oneuser)or die('error. ' . mysqli_error($con));;  
+		$arr = [];
+		while ($row = mysqli_fetch_assoc($sql)) {
+			array_push($arr, $row);
+		}
+		$data = ['data'=>$arr,'amount'=>$amount];
+		if($count && $sql){
+			success($data);
+		}else{
 			error();
 		}
 	}

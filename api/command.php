@@ -2,6 +2,8 @@
 session_start();
 include "config.php";
 $allgender = "SELECT * FROM tb_gender";
+$allprovince = "SELECT * FROM tb_province";
+$alltarget = "SELECT * FROM tb_target";
 $sql_gender = "SELECT count(u_Gender_id) as count , u_Gender_id,Gender_name
                 FROM tb_user LEFT JOIN tb_Gender ON tb_user.u_Gender_id = tb_Gender.Gender_id
                 WHERE u_Gender_id != 0

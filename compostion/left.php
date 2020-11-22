@@ -1,8 +1,11 @@
 
 <?php if ($login) {?>
+    <?php 
+    $sqlimg = mysqli_query($con,"SELECT img FROM tb_User WHERE User_id = '$current_id'");
+		$row = mysqli_fetch_assoc($sqlimg); ?>
                 <div class="card mx-auto cardshadow">
                     <div class="card-header card-underline">
-                        <img src="assets/image/avatar.png" width="32">
+                        <img src="<?php if($row['img'] == null) echo "assets/image/avatar.png"; else{echo "assets/uploads/".$row['img'] ;} ?>" width="80">
                         <span><?php echo $current_Name; ?> </span>
                     </div>
                     <ul class="list-group list-group-flush">

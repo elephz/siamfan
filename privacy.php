@@ -9,8 +9,14 @@
             <tr>
                 <td class='left-td'>รูปโปรไฟล์</td>
                 <td  class='right-td'>
-
-
+                    <div class="cropimg">
+                        <img  id='user_img' alt="" class='w-100'>
+                    </div>
+                    <select class='float-right form-control d-inline-block w-50 p-1' name="" id="sl-img">
+                        <option value="1">สาธารณะ</option>
+                        <option value="2">เฉพาะสมาชิก</option>
+                        <option value="3">เฉพาะฉัน</option>
+                    </select>
                 </td>
             </tr>
             <tr>

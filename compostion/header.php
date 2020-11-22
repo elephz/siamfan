@@ -4,10 +4,14 @@ if (isset($_SESSION["User_id"])) {
 	$current_id = $_SESSION["User_id"];
 	$current_Name = $_SESSION["Name"];
 	echo '<script type="text/javascript">';
-	echo "var currentjs_id = '$current_id';";
+    echo "var currentjs_id = '$current_id';";
+    echo "var login = true;";
 	echo '</script>';
 } else {
-	$login = false;
+    $login = false;
+    echo '<script type="text/javascript">';
+    echo "login = false;";
+	echo '</script>';
 }
 ?>
 <div class="container-fluid">
@@ -27,7 +31,7 @@ if (isset($_SESSION["User_id"])) {
                         <a class="dropdown-item" href="#"><?php echo $row['Gender_name']; ?></a>
                         <?php }?>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="search">ค้นหาเพื่อน</a>
+                        <a class="dropdown-item" href="search?t=search">ค้นหาเพื่อน</a>
                         </div>
                     </li>
                     <?php if ($login) {?>
