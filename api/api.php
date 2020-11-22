@@ -234,7 +234,7 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 			$i = 1;
 			$amount = count($filtered_get);
 			foreach($filtered_get as $key => $val){
-				if($key == 'text'){ $val = "%".$val."%" ; $filter .="tb_User.User_name LIKE '$val'" ;}
+				if($key == 'text'){ $val = "%".$val."%" ; $filter .="tb_User.Name LIKE '$val'" ;}
 				if($key == 'socail'){ $filter .="$newsocial IS NOT NULL" ;}
 				if($key == 'age_first'){ $filter .="tb_User.age > '$val'" ;}
 				if($key == 'age_last'){ $filter .="tb_User.age < '$val'" ;}
@@ -259,7 +259,7 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 						WHERE $filter
 					ORDER BY RAND () LIMIT 0,30";
 	
-		
+	
 		$sql = mysqli_query($con,$oneuser)or die('error. ' . mysqli_error($con));;  
 		$arr = [];
 		while ($row = mysqli_fetch_assoc($sql)) {

@@ -15,9 +15,11 @@ $("body").on("submit", ".fillter", function (e) {
   let province = $(".f-sl-province").val();
   let target = $(".f-sl-target").val();
   let all = {text,socail,gender,age_first,age_last,province,target}
+  $(".loopcontent").html('');
     search(all)
 })
 function search(fil = {}){
+    let rows = "";
     data = { fil, action: "select-all-user" }
     $.ajax({
         type: "POST",
@@ -27,11 +29,11 @@ function search(fil = {}){
         cache: false,
         success: function (result) {
             console.log(result);
-            let rows = "";
+           
             let arr = result.respond.data;
             let gender = {'1':'women','2':'men','3':'genall','4':'gay','5':'indy','6':'tom','7':'less'}
             $.each(arr, function (k, v) {
-                (v == null) ? "" : v
+                (v == null) ? " " : v
                 let classgender;
                 $.each(gender, function(k1,v1){
                     if(k1 == v.u_Gender_id){
