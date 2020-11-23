@@ -3,6 +3,7 @@ session_start();
 include "config.php";
 $today = date("Y-m-d");
 
+
 if (isset($_POST['action']) || isset($_POST['name'])) {
 	if ($_POST['action'] == "register") {
 		$username = $con->real_escape_string($_POST['username']);
@@ -203,12 +204,10 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 			error("nohaveimg");
 		}
 	}else if ($_POST['action'] == "select-all-user") {
-		
-		
 		$filter = " ";
+		$page = 1;
 		if(isset($_POST['fil'])){
 			$fil = $_POST['fil'];
-			$filter = " ";
 			
 			$text = $con->real_escape_string($fil['text']);
 			$socail = $con->real_escape_string($fil['socail']);
@@ -217,23 +216,34 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 			$age_l = $con->real_escape_string($fil['age_last']);
 			$province = $con->real_escape_string($fil['province']);
 			$target = $con->real_escape_string($fil['target']);
+			$getpage = $con->real_escape_string($fil['currentpage']);
 			$text = "%".$text."%";
-			
-			
 			$newsocial;
+			$page = end($fil);
+			array_pop($fil); 
+		
 			$arrsocial = ['facebook' => 'facebook' ,'phone' => 'phone' ,'line' => 'line_id'  ];
+			//set social
 			foreach($arrsocial as $key => $val){
 				if($socail == $key){
 					$newsocial = "tb_User.".$val;
 				}
 			}
-			$filtered_get = array_filter($fil);
-			if(empty($filtered_get)){
-				$filter = " tb_User.Users_id > 0 ";
+		
+			$filtered_get = array_filter($fil);  //filter null value
+			// echo "<pre>";
+			// 	print_r($filtered_get,false);
+			// echo "</pre>";
+			// echo $end ;
+			// exit;
+			if(empty($filtered_get)){     //set if empty value fillter = true
+				$filter = " true ";
 			}
 			$i = 1;
 			$amount = count($filtered_get);
-			foreach($filtered_get as $key => $val){
+			
+			
+			foreach($filtered_get as $key => $val){				//loop plush string to condition query
 				if($key == 'text'){ $val = "%".$val."%" ; $filter .="tb_User.Name LIKE '$val'" ;}
 				if($key == 'socail'){ $filter .="$newsocial IS NOT NULL" ;}
 				if($key == 'age_first'){ $filter .="tb_User.age > '$val'" ;}
@@ -246,22 +256,36 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 				 }
 			 $i++;
 			}
+		}else{
+			$filter = " true ";
 		}
+	
+		//set limit
+		$start = 0;
+		$limit = 30;
+			$start = ($page - 1) * $limit;
+			// ORDER BY RAND ()
 		
-		
-		$count = mysqli_query($con,"SELECT * FROM tb_User ") or die('error. ' . mysqli_error($con));
-		$amount = $count->num_rows;
 		$oneuser = "SELECT * FROM tb_User 
 						INNER JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id 
 						LEFT JOIN tb_gender ON tb_user.u_Gender_id = tb_gender.Gender_id 
 						LEFT JOIN tb_target ON tb_user.u_Target_id = tb_target.Target_id 
 						LEFT JOIN tb_province ON tb_user.u_Province_id = tb_province.Province_id 
 						WHERE $filter
-					ORDER BY RAND () LIMIT 0,30";
-	
-	
+						ORDER BY tb_User.User_id
+					 	LIMIT $start,$limit";
+		$oneuser1 = "SELECT * FROM tb_User 
+						INNER JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id 
+						LEFT JOIN tb_gender ON tb_user.u_Gender_id = tb_gender.Gender_id 
+						LEFT JOIN tb_target ON tb_user.u_Target_id = tb_target.Target_id 
+						LEFT JOIN tb_province ON tb_user.u_Province_id = tb_province.Province_id 
+						WHERE $filter ";
+					
+	$count = mysqli_query($con,$oneuser1) or die('error. ' . mysqli_error($con));
+	$amount = $count->num_rows;
 		$sql = mysqli_query($con,$oneuser)or die('error. ' . mysqli_error($con));;  
 		$arr = [];
+	
 		while ($row = mysqli_fetch_assoc($sql)) {
 			array_push($arr, $row);
 		}

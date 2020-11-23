@@ -92,44 +92,45 @@ if(isset($_GET['social'])){
                 <h5> <?php echo $title; ?></h5>
         </div>
     </div>
+   
     <div class="row">
         <form class="form-inline fillter mx-auto w-100">
             <input type="text" class="form-control f-sl-text   mb-2 mr-sm-2 " id="inlineFormInputName2" placeholder="คำค้น">
 
-            <select class="form-control f-sl-socail  mb-2 mr-sm-2 " name="f-sl-socail" id="">
+            <select class="form-control f-sl-socail  mb-2 mr-sm-2 " name="f-sl-socail" >
                 <option value="">เลือกเฉพาะ</option>
                 <option value="line">เพื่อนที่มีไลน์</option>
                 <option value="facebook">เพื่อนที่มีเฟซบุ๊ก</option>
                 <option value="phone">เพื่อนที่มีเบอร์โทร</option>
             </select>
-            <select class="form-control f-sl-gender  mb-2 mr-sm-2 " name="f-sl-gender" id="">
+            <select class="form-control f-sl-gender  mb-2 mr-sm-2 " name="f-sl-gender" >
                 <option value="">เพศ</option>
                 <?php while ($Search_row1 = mysqli_fetch_assoc($base_selectGender)) { ?>
                 <option value="<?php echo $Search_row1['Gender_id']; ?>"><?php echo $Search_row1['Gender_name']; ?></option>
                 <?php } ?>
                
             </select>
-            <select class="form-control f-sl-age_first  mb-2 mr-sm-2 " name="f-sl-age_first" id="">
+            <select class="form-control f-sl-age_first  mb-2 mr-sm-2 " name="f-sl-age_first" >
                 <option value="">อายุ</option>
                 <?php for ($i = 18; $i <= 80; $i++) {?>
                 <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                 <?php }?>
             </select>
             <label for="">ถึง</label>
-            <select class="form-control ml-1 f-sl-age_last  mb-2 mr-sm-2 " name="f-sl-age_last" id="">
+            <select class="form-control ml-1 f-sl-age_last  mb-2 mr-sm-2 " name="f-sl-age_last" >
                 <option value="">อายุ</option>
                 <?php for ($i = 18; $i <= 80; $i++) {?>
                 <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                 <?php }?>
             </select>
-            <select class="form-control   mb-2 f-sl-province mr-sm-2 " name="f-sl-province" id="">
+            <select class="form-control   mb-2 f-sl-province mr-sm-2 " name="f-sl-province" >
                 <option value="">จังหวัด</option>
                 <?php while ($Search_row2 = mysqli_fetch_assoc($base_selectprovince)) { ?>
                     <option value="<?php echo $Search_row2['Province_id']; ?>"><?php echo $Search_row2['Province_name']; ?></option>
                 <?php }?>
               
             </select>
-            <select class="form-control f-sl-target mb-2 mr-sm-2 " name="f-sl-target" id="">
+            <select class="form-control f-sl-target mb-2 mr-sm-2 " name="f-sl-target" >
                 <option value="">คนที่ต้องการ</option>
                 <?php while ($Search_row3 = mysqli_fetch_assoc($base_seletarget)) { ?>
                     <option value="<?php echo $Search_row3['Target_id']; ?>"><?php echo $Search_row3['Target_name']; ?></option>
@@ -138,8 +139,31 @@ if(isset($_GET['social'])){
             <button type="submit" class="btn btn-custom1 mb-2">ค้นหา</button>
         </form>
     </div>
+    <div class="row my-2">
+        <div class="col-md-6 col-sm-12">
+           <span class='text-left'> พบ <span id='found'></span> รายการ </span>
+        </div>
+        <div class="col-md-6 col-sm-12 text-right">
+               <span>จัดเรียงตาม:</span>
+               <select class='form-control d-inline-block w-50 float-right ml-2'  name="" id="order">
+                    <option value="lastpost">โพสล่าสุด</option>
+                    <option value="poppular">ความนิยม</option>
+                    <option value="lowtoup">อายุน้อยไปมาก</option>
+                    <option value="uptolow">อายุมากไปน้อย</option>
+               </select>
+        </div>
+    </div>
     <div class="row loopcontent">
-    
+       
+    </div>
+    <div class="row">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item previous"><a class="page-link btn-control" control='left' href="#">Previous</a></li>
+               
+                <li class="page-item"><a class="page-link btn-control" control='right' href="#">Next</a></li>
+            </ul>
+        </nav>
     </div>
 </div>
 

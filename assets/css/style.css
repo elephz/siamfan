@@ -71,7 +71,10 @@ small {
 .col-md-9>.row {
     border-bottom: 1px dotted #eaeaea;
 }
-
+.f8coloe{
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
 .gender-list>ul {
     list-style-type: none;
     margin: 0;
