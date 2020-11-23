@@ -1,19 +1,34 @@
 <?php
 include "api/config.php";
+
+date_default_timezone_set("Asia/Bangkok");
+// echo $random."<br>";
+echo date('m/d/Y', 17621576);
+
+$timestamp = 17621576;
+$datetimeFormat = 'Y-m-d H:i:s';
+
+$date = new \DateTime();
+// If you must have use time zones
+// $date = new \DateTime('now', new \DateTimeZone('Europe/Helsinki'));
+$date->setTimestamp($timestamp);
+echo $date->format($datetimeFormat);
 exit;
-$sql = mysqli_query($con, " SELECT User_id FROM `tb_user`");
-while ($row = mysqli_fetch_assoc($sql)) {
-	$users = $row['User_id'];
-	mysqli_query($con,"INSERT INTO tb_privacy(User_id) VALUES ('$users')");
-}
+// $sql = mysqli_query($con, " SELECT User_id FROM `tb_user`");
+// while ($row = mysqli_fetch_assoc($sql)) {
+// 	$users = $row['User_id'];
+// 	mysqli_query($con,"INSERT INTO tb_privacy(User_id) VALUES ('$users')");
+// }
 
-for ($i = 1; $i <= 120; $i++) {
-	$land = (rand(1, 77));
-	$land2 = (rand(1, 120));
+for ($i = 1; $i <= 116; $i++) {
+	
+	$land2 = (rand(18, 80));
+	$land1 = (rand(1, 1000));
+	$random = rand(2018,2020)."-".rand(1,11)."-".rand(1,21)." ".rand(0,23).":".rand(1,59).":".rand(1,59);
+
+	$random2 = rand(2018,2020)."-".rand(1,11)."-".rand(1,10);
 // 		$lantext = generateRandomString();
-	$a = "%" . $i;
-	$sql = mysqli_query($con, "UPDATE tb_user SET u_Province_id = '$land' WHERE User_id  = '$land2'");
-
+	$sql = mysqli_query($con, "UPDATE tb_user SET lastonline_time = '$random', created_date = '$random2 ' WHERE User_id  = '$i'");
 }
 
 // }

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "config.php";
+date_default_timezone_set("Asia/Bangkok");
 $today = date("Y-m-d");
 
 
@@ -206,9 +207,13 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 	}else if ($_POST['action'] == "select-all-user") {
 		$filter = " ";
 		$page = 1;
+		$qr_order = "RAND ()";
 		if(isset($_POST['fil'])){
-			$fil = $_POST['fil'];
 			
+			$fil = $_POST['fil'];
+			// echo "<pre>";
+			// 	print_r($fil,false);
+			// echo "</pre>";
 			$text = $con->real_escape_string($fil['text']);
 			$socail = $con->real_escape_string($fil['socail']);
 			$gender = $con->real_escape_string($fil['gender']);
@@ -221,7 +226,17 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 			$newsocial;
 			$page = end($fil);
 			array_pop($fil); 
-		
+			$order;
+			if(isset($fil['order'])){
+				$order = $fil['order'];
+			}
+			unset($fil['order']);
+			// 
+			// echo "this order".$order;
+			// echo "<pre>";
+			// 	print_r($fil,false);
+			// echo "</pre>";
+			// exit;
 			$arrsocial = ['facebook' => 'facebook' ,'phone' => 'phone' ,'line' => 'line_id'  ];
 			//set social
 			foreach($arrsocial as $key => $val){
@@ -229,25 +244,37 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 					$newsocial = "tb_User.".$val;
 				}
 			}
-		
+			//set order
+			$arr_order = [
+				'lastpost' => 'tb_User.lastonline_time DESC ',
+				'poppular' => 'tb_User.view_count DESC',
+				'lowtoup' => 'tb_User.age ASC',
+				'uptolow' => 'tb_User.age DESC'
+			];
+			if(!empty($order)){
+			$qr_order;
+			foreach($arr_order as $key => $val){
+				if($order == $key){
+					$qr_order = $val;
+				}
+			}
+		}
 			$filtered_get = array_filter($fil);  //filter null value
-			// echo "<pre>";
-			// 	print_r($filtered_get,false);
-			// echo "</pre>";
-			// echo $end ;
-			// exit;
+			
+			
+			
+		
+			
 			if(empty($filtered_get)){     //set if empty value fillter = true
 				$filter = " true ";
 			}
 			$i = 1;
 			$amount = count($filtered_get);
-			
-			
 			foreach($filtered_get as $key => $val){				//loop plush string to condition query
 				if($key == 'text'){ $val = "%".$val."%" ; $filter .="tb_User.Name LIKE '$val'" ;}
 				if($key == 'socail'){ $filter .="$newsocial IS NOT NULL" ;}
-				if($key == 'age_first'){ $filter .="tb_User.age > '$val'" ;}
-				if($key == 'age_last'){ $filter .="tb_User.age < '$val'" ;}
+				if($key == 'age_first'){ $filter .="tb_User.age >= '$val'" ;}
+				if($key == 'age_last'){ $filter .="tb_User.age <= '$val'" ;}
 				if($key == 'province'){ $filter .="tb_User.u_Province_id = '$val'" ;}
 				if($key == 'target'){ $filter .="tb_User.u_Target_id = '$val'" ;}
 				if($key == 'gender'){ $filter .="tb_User.u_Gender_id = '$val'" ;}
@@ -266,20 +293,29 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 			$start = ($page - 1) * $limit;
 			// ORDER BY RAND ()
 		
-		$oneuser = "SELECT * FROM tb_User 
+		$oneuser = "SELECT TIMEDIFF(now(), tb_User.lastonline_time) as timediff,
+						DATEDIFF(now(), tb_User.lastonline_time) as daydiff,
+						tb_privacy.*,tb_gender.*,tb_target.*,tb_province.*,
+						tb_User.User_id,tb_User.Name,tb_User.line_id,
+						tb_User.facebook,tb_User.e_mail,tb_User.phone,
+						tb_User.u_Gender_id,tb_User.u_Province_id,
+						tb_User.u_Target_id,tb_User.age,
+						tb_User.Description,tb_User.view_count,
+						tb_User.img,tb_User.acc_status, 
+						tb_User.created_date,tb_User.last_update,
+						tb_User.lastonline_time
+						FROM tb_User
 						INNER JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id 
 						LEFT JOIN tb_gender ON tb_user.u_Gender_id = tb_gender.Gender_id 
 						LEFT JOIN tb_target ON tb_user.u_Target_id = tb_target.Target_id 
 						LEFT JOIN tb_province ON tb_user.u_Province_id = tb_province.Province_id 
 						WHERE $filter
-						ORDER BY tb_User.User_id
+						ORDER BY $qr_order
 					 	LIMIT $start,$limit";
-		$oneuser1 = "SELECT * FROM tb_User 
-						INNER JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id 
-						LEFT JOIN tb_gender ON tb_user.u_Gender_id = tb_gender.Gender_id 
-						LEFT JOIN tb_target ON tb_user.u_Target_id = tb_target.Target_id 
-						LEFT JOIN tb_province ON tb_user.u_Province_id = tb_province.Province_id 
-						WHERE $filter ";
+		$oneuser1 = "SELECT * FROM tb_User WHERE $filter ";
+						
+			// echo $oneuser;
+			// exit;
 					
 	$count = mysqli_query($con,$oneuser1) or die('error. ' . mysqli_error($con));
 	$amount = $count->num_rows;
@@ -295,5 +331,6 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 		}else{
 			error();
 		}
+		
 	}
 }

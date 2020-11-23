@@ -146,6 +146,7 @@ if(isset($_GET['social'])){
         <div class="col-md-6 col-sm-12 text-right">
                <span>จัดเรียงตาม:</span>
                <select class='form-control d-inline-block w-50 float-right ml-2'  name="" id="order">
+                    <option value="">จัดเรียงตาม</option>
                     <option value="lastpost">โพสล่าสุด</option>
                     <option value="poppular">ความนิยม</option>
                     <option value="lowtoup">อายุน้อยไปมาก</option>
@@ -156,7 +157,7 @@ if(isset($_GET['social'])){
     <div class="row loopcontent">
        
     </div>
-    <div class="row">
+    <div class="row pagination-row">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item previous"><a class="page-link btn-control" control='left' href="#">Previous</a></li>
