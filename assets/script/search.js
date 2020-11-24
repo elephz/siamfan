@@ -115,7 +115,7 @@ function isEmpty(obj) {
                         time = bftime.substring(3,4);
                         time = time+" นาทีที่แล้ว";
                     }else{
-                        time = bftime.substring(1,2);
+                        time = bftime.substring(0,2);
                         time = time+" ชั่วโมงที่แล้ว";
                     }
                  
@@ -147,12 +147,13 @@ function isEmpty(obj) {
                //setimage
              
                 rows +=
+               
         "<div class='col-md-2 col-sm-6 p-0'>"+
-           " <a href=''>"+
+           " <a href='member?m="+v.User_id+"'>"+
                 "<div class='Usercard2'>"+
                     "<div class='content-user'>"+
                         "<img src='"+img+"' alt='' >"+
-                        "<h5>"+v.User_id+" "+v.Name+"</h5>"+
+                        "<h5>"+v.Name+"</h5>"+
                         "<div class='gender-age my-1'>"+
                             "<span class='label gender "+classgender+"'>"+v.Gender_name+"</span>"+
                             "<span class='label f8coloe p-1 m-1'>"+v.age+"</span>"+
@@ -178,7 +179,7 @@ function isEmpty(obj) {
                     "</div>"+
                " </div>"+
             "</a>"+
-        "</div>";
+        "</div>"  ;
             });
             }else if(isEmpty(arr) && total >=1){
                 currentpage = 1;

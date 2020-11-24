@@ -1,0 +1,22 @@
+.left-td{
+    color: #336199;
+    background-color: #EDF3F4;
+}
+
+.eyes{
+    color: #999;
+}
+.report{
+    color:red;
+}
+
+.bullhorn,.fa-bullhorn{
+    cursor: pointer;
+    color: black;
+    transition: 0.3s;
+    font-size: 18px;
+}
+.bullhorn:hover,.fa-bullhorn:hover{
+    transform: scale(1.1);
+    color: black;
+}

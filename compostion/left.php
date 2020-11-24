@@ -26,7 +26,7 @@
                         </div>
                     </div>
 
-                    <div class="card mx-auto cardshadow mt-2">
+                    <div class="card mx-auto cardshadow mt-2 ">
                         <div class="card-header">
                             <span>ค้นหาเพื่อน</span>
                                 <form class="form-inline mx-auto w-100">
@@ -75,7 +75,7 @@
                     </div>
 
                 <?php }?>
-                <div class="card mx-auto mt-3 cardshadow">
+                <div class="card mx-auto mt-3 cardshadow d-sm-none d-md-block">
                     <div class="card-header">
                         <span>เพื่อนที่โพสต์ </span>
                     </div>

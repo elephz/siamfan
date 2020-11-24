@@ -1,6 +1,41 @@
 <?php
 include "api/config.php";
 
+exit;
+ 
+ $random = rand(2018,2020)."-".rand(1,11)."-".rand(1,21)." ".rand(0,23).":".rand(1,59).":".rand(1,59);
+ for ($i = 1; $i <= 50; $i++) {
+	$land2 = (rand(1, 50));
+	$land1 = (rand(50, 116));
+	$random2 = rand(2018,2020)."-".rand(1,11)."-".rand(1,10);
+	$sql = mysqli_query($con, "INSERT INTO `tb_vote`(`voter_id`,`voted_id`,`date`) VALUES ('$land1','$land2','$random2')");
+}
+
+ // แอเรย์เก็บผลลัพท์ไว้ที่ key
+ $datas = array();
+ // จำนวนข้อมูลที่ต้องการ
+ $count = 116;
+ // วนลูป
+ while (true) {
+	 // สุ่มตัวเลข
+	 $r = rand(1, $count * 1);
+	 // ตรวจสอบตัวเลขซ้ำ
+	 if (!isset($datas[$r])) {
+		 // ถ้ายังไม่เคยมีตัวเลขนี้ให้ใส่ลง array เป็น key
+		 $datas[$r] = 0;
+	 }
+	 if (sizeof($datas) == $count) {
+		 // ครบจำนวนที่ต้องการให้ออกจากลูป
+		 break;
+	 }
+ }
+ // จำนวนข้อมูลที่สุ่มได้
+ echo sizeof($datas);
+ // แสดงรายการข้อมูลที่สุ่มได้
+ echo "<pre>";
+ print_r(array_keys($datas));
+ echo "</pre>";
+ 
 date_default_timezone_set("Asia/Bangkok");
 // echo $random."<br>";
 echo date('m/d/Y', 17621576);
@@ -13,7 +48,7 @@ $date = new \DateTime();
 // $date = new \DateTime('now', new \DateTimeZone('Europe/Helsinki'));
 $date->setTimestamp($timestamp);
 echo $date->format($datetimeFormat);
-exit;
+
 // $sql = mysqli_query($con, " SELECT User_id FROM `tb_user`");
 // while ($row = mysqli_fetch_assoc($sql)) {
 // 	$users = $row['User_id'];
@@ -22,8 +57,8 @@ exit;
 
 for ($i = 1; $i <= 116; $i++) {
 	
-	$land2 = (rand(18, 80));
-	$land1 = (rand(1, 1000));
+	$land2 = (rand(1, 116));
+	$land1 = (rand(1, 116));
 	$random = rand(2018,2020)."-".rand(1,11)."-".rand(1,21)." ".rand(0,23).":".rand(1,59).":".rand(1,59);
 
 	$random2 = rand(2018,2020)."-".rand(1,11)."-".rand(1,10);

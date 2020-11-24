@@ -319,7 +319,7 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 					
 	$count = mysqli_query($con,$oneuser1) or die('error. ' . mysqli_error($con));
 	$amount = $count->num_rows;
-		$sql = mysqli_query($con,$oneuser)or die('error. ' . mysqli_error($con));;  
+		$sql = mysqli_query($con,$oneuser)or die('error. ' . mysqli_error($con)); 
 		$arr = [];
 	
 		while ($row = mysqli_fetch_assoc($sql)) {
@@ -332,5 +332,47 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 			error();
 		}
 		
+	}else if ($_POST['action'] == "report-user"){
+		$id = $con->real_escape_string($_POST['currentjs_id']);
+		$report_description = $con->real_escape_string($_POST['reson']);
+		$more = $con->real_escape_string($_POST['more']);
+		$reportedid = $con->real_escape_string($_POST['reportedid']);
+		$sql = "INSERT INTO 
+				`tb_report`(`reporter_id`,`reported_id`,`report_description`,`reason`,`date`) 
+					VALUES ('$id','$reportedid','$report_description','$more','$today')";
+		$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+		if($qr){
+			success();
+		}else{
+			error();
+		}
+	}else if ($_POST['action'] == "upviewcount"){
+		$id = $con->real_escape_string($_POST['member_id']);
+		$qr = mysqli_query($con, "UPDATE tb_user SET view_count = view_count+1 WHERE User_id = '$id'") or die('error. ' . mysqli_error($con));
+		if($qr){
+			success();
+		}else{
+			error();
+		}
+	}else if ($_POST['action'] == "vote-user"){
+		$voted = $con->real_escape_string($_POST['member_id']);
+		$voter = $con->real_escape_string($_POST['currentjs_id']);
+		$sql1 = "SELECT * FROM `tb_vote` WHERE `voter_id` = '$voter ' AND  `voted_id` = '$voted ' AND `date` ='$today'";
+		$qr1 = mysqli_query($con,$sql1) or die('error. ' . mysqli_error($con));
+		$amount = $qr1->num_rows;
+
+		if($amount >=1){
+			error("todayvoted");
+			exit;
+		}
+		$sql = "INSERT INTO 
+			`tb_vote`(`voter_id`,`voted_id`,`date`) 
+			VALUES ('$voter','$voted','$today')";
+		$qr = mysqli_query($con,$sql) or die('error. ' . mysqli_error($con));
+		if($qr){
+			success();
+		}else{
+			error();
+		}
 	}
 }
