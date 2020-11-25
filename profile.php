@@ -44,5 +44,6 @@
 <script src="assets/previewimg/ImgUploader/imguploader.bs.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js" integrity="sha512-MqEDqB7me8klOYxXXQlB4LaNf9V9S0+sG1i8LtPOYmHqICuEZ9ZLbyV3qIfADg2UJcLyCm4fawNiFvnYbcBJ1w==" crossorigin="anonymous"></script>
 <script src="assets/script/profile.js"></script>
+<script src="assets/script/checkonline.js"></script>
 </html>
 <?php } ?>

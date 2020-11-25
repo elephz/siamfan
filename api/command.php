@@ -67,4 +67,90 @@ function myfunction($a,$b)
     }
     return ($a>$b)?1:-1;
     }
+    function image($img_pvc, $img_name)
+	{
+		global $login;
+		if ($img_name == null) {
+			$val = 'assets/image/avatar.png';
+		} else {
+			if ($img_pvc == '1') {
+				$val = 'assets/uploads/' . $img_name;
+			} else if ($img_pvc == '2') {
+				if ($login) {
+					$val = 'assets/uploads/' . $img_name;
+				} else {
+					$val = 'assets/image/avatar.png';
+				}
+			}else if($img_pvc == '3'){
+                $val = 'assets/image/avatar.png';
+            }
+		}
+		return $val;
+	}
+	function privacy($pvc, $text)
+	{
+		global $login;
+		if ($pvc == '1') {
+			if ($login) {
+				$val = $text;
+			} else {
+				$val = "<span class='small'>เฉพาะสมาชิก<span>";
+			}
+		} else if ($pvc == '2') {
+			$val = "<span class='small'>เฉพาะฉัน<span>";
+		}
+		return $val;
+	}
+	function onlinetime($daydiff, $timediff, $lastonlinetime)
+	{
+		if ($daydiff == "0") {
+			$bftime = $timediff;
+			$time = substr($bftime, 0, 2);
+			if ($time == "00") {
+				$time1 = substr($bftime, 3, 4);
+				$time = $time1 . "นาทีที่แล้ว";
+			} else {
+				$time1 = substr($bftime, 0, 2);
+				$time = $time1 . " ชั่วโมงที่แล้ว";
+			}
+		} else if ($daydiff <= 7) {
+			global $dayTH, $monthTH_brev;
+			$lasttimeonline = $lastonlinetime;
+			$dayless7 = substr($lasttimeonline, 0, 11);
+			$timeless7 = substr($lasttimeonline, 11, 16);
+			$time = dayless7($dayless7, $timeless7);
+		} else if ($daydiff >= 7) {
+			$lasttimeonline = $lastonlinetime;
+			$lasttimeonline = substr($lasttimeonline, 0, 11);
+			$time = DateThai($lasttimeonline);
+		}
+		return $time;
+	}
 
+function dayless7($dayless7, $timeless7)
+{ // 19  ธ.ค. 2556 10:10:4
+	$dayTH = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+	$strday = date("w", strtotime($dayless7));
+	$strday = "วัน " . $dayTH[$strday] . " เวลา " . $timeless7 . " น.";
+	return $strday;
+}
+
+function DateThai($strDate)
+{
+	$strYear = date("Y", strtotime($strDate)) + 543;
+	$strMonth = date("n", strtotime($strDate));
+	$strDay = date("j", strtotime($strDate));
+	$strMonthCut = array("", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.");
+	$strMonthThai = $strMonthCut[$strMonth];
+	return "$strDay $strMonthThai $strYear";
+}
+function classgener($getderid)
+{
+    $arrgender = ['1' => 'women', '2' => 'men', '3' => 'genall', '4' => 'gay', '5' => 'indy', '6' => 'tom', '7' => 'less'];
+    foreach ($arrgender as $key => $val) {
+        if ($getderid == $key) {
+            $classgender = $val;
+        }
+    }
+    return $classgender;
+}

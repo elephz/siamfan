@@ -1,4 +1,5 @@
 <?php include "api/command.php";?>
+<?php include "api/indexcommand.php";?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,15 +64,17 @@
                 </div>
 
                 <div class="gallery col-sm-12">
-                    <?php for ($i = 1; $i <= 60; $i++) {?>
-                        <a href="" title="logo">
-                            <img src="assets/image/avatar.png" alt="logo" width="75px">
+                    <?php while ($randimg = mysqli_fetch_assoc($qrshowimg)) {
+	$alt = $randimg['Name'] . "/" . $randimg['Gender_name'] . "/" . $randimg['age'];
+	?>
+                        <a class='p-0' href="member?m=<?php echo $randimg['User_id'] ?>" title="<?php echo $alt; ?>">
+                            <img src="<?php echo image($randimg['pvc_img'], $randimg['img']) ?>" alt="<?php echo $alt; ?>" width="75px">
                         </a>
                     <?php }?>
                 </div>
 
                 <div class="row contact my-5 text-center">
-                    <div class="col-md-3 col-sm-6">
+                    <div class="col-md-3 col-sm-6 col-6 mt-1">
                         <div class="shadow">
                             <a href="search?social=line">
                                 <img class='pb-3' src="assets/image/line.png" alt="" width="75px">
@@ -79,7 +82,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-6">
+                    <div class="col-md-3 col-sm-6 col-6 mt-1">
                         <div class="shadow">
                             <a href="search?social=facebook">
                                 <img class='pb-3' src="assets/image/facebook.png" alt="" width="75px">
@@ -87,7 +90,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-6">
+                    <div class="col-md-3 col-sm-6 col-6 mt-1">
                         <div class="shadow">
                             <a href="search?social=phone">
                                 <img class='pb-3' src="assets/image/phone-call.png" alt="" width="75px">
@@ -95,7 +98,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-6">
+                    <div class="col-md-3 col-sm-6 col-6 mt-1">
                         <div class="shadow">
                             <a href="search?t=search">
                                 <img class='pb-3' src="assets/image/search.png" alt="" width="75px">
@@ -127,33 +130,8 @@
             <small >อย่ารอช้า เพื่อนรออยู่ แอดไปคุยกันนเลย</small>
         </div>
     </div>
-    <div class="row py-3 p-0">
-        <div class="col-md-3 col-sm-12">
-            <a href="">
-                <div class="Carduser">
-                    <div class="grid-item-left text-center">
-                        <img src="assets/image/avatar.png" alt="" class='w-100'>
-                    <p class='online'>
-                        <img  src="https://www.siamfans.com/media/img/user_online.gif" alt=""><span>ออนไลน์</span>
-                    </p>
-                    </div>
-                    <div class="grid-item-right">
-                        <h5>Lorem ipsum</h5>
-                        <div class="userdescription">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis, reiciendis.
-                        </div>
-                        <div class='gender-age my-1'>
-                            <span class="label gender men">gender</span>
-                            <span class="label">56</span>
-                        </div>
-                        <div class="province-target">
-                            <i class="fas fa-street-view"></i> กรุงเทพมหานคร <br>
-                            <i class="fas fa-search"></i> เป้าหมาย
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
+    <div class="row py-3 p-0 loopcontent_onlinepeople">
+
     </div>
 </div>
 <!-- current online -->
@@ -166,22 +144,26 @@
         </div>
     </div>
     <div class="row">
+    <?php while ($rowvotetoday = mysqli_fetch_assoc($qrvotetoday)) {
+	$idcviewcount = $rowvotetoday["User_id"];
+	$sql_viewcount = mysqli_query($con, "SELECT voted_id FROM `tb_vote` WHERE voted_id = '$idcviewcount'") or die('error. ' . mysqli_error($con));
+	?>
         <div class="col-md-2 col-sm-6 p-0">
-            <a href="">
+            <a href="member?m=<?php echo $rowvotetoday['User_id']; ?>">
                 <div class="Usercard2">
                     <div class="content-user">
                         <img src="assets/image/avatar.png" alt="" >
-                        <h5>Lorem ipsum</h5>
+                        <h5><?php echo $rowvotetoday['Name']; ?></h5>
                         <div class='gender-age my-1'>
-                            <span class="label gender men">gender</span>
-                            <span class="label">56</span>
+                            <span class="label gender <?php echo classgener($rowvotetoday['Gender_id']) ?>"><?php echo $rowvotetoday['Gender_name'] ?></span>
+                            <span class="label"><?php echo $rowvotetoday['age'] ?></span>
                         </div>
                         <div class="userdescription">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis, reiciendis.
+                            <?php echo (($rowvotetoday['Description'] == null) ? ' ' : $rowvotetoday['Description']) ?>
                         </div>
                         <div class="province-target text-left my-1">
-                            <i class="fas fa-street-view"></i> กรุงเทพมหานคร <br>
-                            <i class="fas fa-search"></i> เป้าหมาย
+                            <i class="fas fa-street-view"></i> <?php echo $rowvotetoday['Province_name'] ?> <br>
+                            <i class="fas fa-search"></i> <?php echo $rowvotetoday['Target_name'] ?>
                         </div>
                     </div>
                     <div class="content-socail ">
@@ -192,13 +174,14 @@
                         </ul>
                     </div>
                     <div class="content-viewcount p-1">
-                        <span class='pull-left'><i class="fa fa-bullhorn"></i> 1</span>
-                        <span class='float-right'>11 ชั่วโมงที่แล้ว</span>
+                        <span class='pull-left'><i class="fa fa-bullhorn"></i> <?php echo $sql_viewcount->num_rows; ?></span>
+                        <span class='float-right'><?php echo onlinetime($rowvotetoday['daydiff'], $rowvotetoday['timediff'], $rowvotetoday['lastonline_time']) ?></span>
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </a>
         </div>
+    <?php }?>
     </div>
 </div>
 <!-- vote zone -->
@@ -207,36 +190,38 @@
     <div class="row dot_bt">
         <div class="col text-center  pb-2">
             <h2 class='d-inline-block mb-0'>เพื่อนที่กำลังได้รับความนิยม</h2>
-            <small >เพื่อนที่ได้รับการเข้าชมโปรไฟล์มากกว่า 1,000 ครั้ง</small>
+            <small >เพื่อนที่ได้รับการเข้าชมโปรไฟล์มากกว่า 500 ครั้ง</small>
         </div>
     </div>
     <div class="row py-3 p-0">
-        <div class="col-md-3 col-sm-12">
-            <a href="">
+    <?php while ($rowppr = mysqli_fetch_assoc($poppula)) {?>
+        <div class="col-md-3 col-sm-12 py-1">
+            <a href="member?m=<?php echo $rowppr['User_id']; ?>">
                 <div class="Carduser">
                     <div class="grid-item-left text-center">
                         <img src="assets/image/avatar.png" alt="" class='w-100'>
                     <p class='online'>
-                        <i class="fas fa-eye"></i> 500 ครั้ง
+                        <i class="fas fa-eye"></i> <?php echo $rowppr['view_count']; ?> ครั้ง
                     </p>
                     </div>
                     <div class="grid-item-right">
-                        <h5>Lorem ipsum</h5>
+                    <h5><?php echo $rowppr['Name']; ?></h5>
                         <div class="userdescription">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis, reiciendis.
+                            <?php echo $rowppr['Description'] ?>
                         </div>
                         <div class='gender-age my-1'>
-                            <span class="label gender men">gender</span>
-                            <span class="label">56</span>
+                            <span class="label gender <?php echo classgener($rowppr['Gender_id']) ?>"><?php echo $rowppr['Gender_name'] ?></span>
+                            <span class="label"><?php echo $rowppr['age'] ?></span>
                         </div>
                         <div class="province-target">
-                            <i class="fas fa-street-view"></i> กรุงเทพมหานคร <br>
-                            <i class="fas fa-search"></i> เป้าหมาย
+                            <i class="fas fa-street-view"></i> <?php echo $rowppr['Province_name'] ?> <br>
+                            <i class="fas fa-search"></i> <?php echo $rowppr['Target_name'] ?>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
+    <?php }?>
     </div>
 </div>
 <!-- poppular zone -->
@@ -251,7 +236,7 @@
     <div class="row py-3 grid-4">
     <?php while ($target = mysqli_fetch_assoc($select_target)) {?>
         <div class="grid4-item">
-            <a href='search?target=<?php echo $target['u_Target_id']; ?>' type="button" class="btn btn-custom p-2 p-4"> <h4 class='d-inline f-16'><?php if ($target['u_Target_id'] != 0) {echo $target['Target_name'] . '(' . $target['count'] . ')';} else {echo "";}?></h4> </a>
+            <a href='search?target=<?php echo $target['u_Target_id']; ?>' type="button" class="btn btn-custom "> <h4 class='d-inline f-16'><?php if ($target['u_Target_id'] != 0) {echo $target['Target_name'] . '(' . $target['count'] . ')';} else {echo "";}?></h4> </a>
         </div>
     <?php }?>
     </div>
@@ -266,51 +251,51 @@
         </div>
     </div>
     <div class="row py-3 ">
-        <table class='w-100 allgender-age'>
+        <table class='w-100 allgender-age table-responsive-sm'>
             <thead>
                 <tr>
                     <th>อายุ</th>
-                    <?php while ($gname = mysqli_fetch_assoc($sql_gendername)) { ?>
+                    <?php while ($gname = mysqli_fetch_assoc($sql_gendername)) {?>
                         <th><?php echo $gname['Gender_name']; ?></th>
-                    <?php } ?>
+                    <?php }?>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>18-24 ปี</td>
                     <?php foreach ($data1824 as $key => $value) {
-                     echo "<td>".(($value == "0")? " " :$value)."</td>";
-                    }?>
+	echo "<td><a href='search?age=$key&f=18&l=24'>" . (($value == "0") ? " " : $value) . "</a></td>";
+}?>
                 </tr>
                 <tr>
                     <td>25-34 ปี</td>
                      <?php foreach ($data2534 as $key => $value) {
-                     echo "<td>".(($value == "0")? " " :$value)."</td>";
-                    }?>
+	echo "<td><a href='search?age=$key&f=25&l=34'>" . (($value == "0") ? " " : $value) . "</a></td>";
+}?>
                 </tr>
                 <tr>
                     <td>35-44 ปี</td>
                      <?php foreach ($data3544 as $key => $value) {
-                     echo "<td>".(($value == "0")? " " :$value)."</td>";
-                    }?>
+	echo "<td><a href='search?age=$key&f=35&l=44'>" . (($value == "0") ? " " : $value) . "</a></td>";
+}?>
                 </tr>
                 <tr>
                     <td>45-54 ปี</td>
                      <?php foreach ($data4554 as $key => $value) {
-                     echo "<td>".(($value == "0")? " " :$value)."</td>";
-                    }?>
+	echo "<td><a href='search?age=$key&f=45&l=54'>" . (($value == "0") ? " " : $value) . "</a></td>";
+}?>
                 </tr>
                 <tr>
                     <td>55-64 ปี</td>
                      <?php foreach ($data5564 as $key => $value) {
-                     echo "<td>".(($value == "0")? " " :$value)."</td>";
-                    }?>
+	echo "<td><a href='search?age=$key&f=55&l=64'>" . (($value == "0") ? " " : $value) . "</a></td>";
+}?>
                 </tr>
                 <tr>
                     <td>65 ปีขึ้นไป</td>
                      <?php foreach ($data65up as $key => $value) {
-                     echo "<td>".(($value == "0")? " " :$value)."</td>";
-                    }?>
+	echo "<td><a href='search?age=$key&f=65&l=100'>" . (($value == "0") ? " " : $value) . "</a></td>";
+}?>
                 </tr>
             </tbody>
         </table>
@@ -327,16 +312,18 @@
     </div>
     <div class="row py-3 ">
     <?php while ($province = mysqli_fetch_assoc($seleceprovince)) {?>
-        <div class="col-md-2 col-sm-4 p-3">
-            <a class='province-icon' href="<?php echo "#" . $province['u_Province_id']; ?>"><i class="fas fa-street-view"></i> <?php echo $province['Province_name'] . '(' . $province['count'] . ')'; ?> </a>
+        <div class="col-md-2 col-sm-4 col-6 p-3">
+            <a class='province-icon' href="<?php echo "search?province=" . $province['u_Province_id']; ?>"><i class="fas fa-street-view"></i> <?php echo $province['Province_name'] . '(' . $province['count'] . ')'; ?> </a>
         </div>
     <?php }?>
     </div>
 </div>
 <!-- all province zone -->
+<?php include 'footer.php';?>
 </body>
 <script src="assets/jquery/jquery.js"></script>
 <script src="assets/bootstrap/js/bootstrap.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js" integrity="sha512-MqEDqB7me8klOYxXXQlB4LaNf9V9S0+sG1i8LtPOYmHqICuEZ9ZLbyV3qIfADg2UJcLyCm4fawNiFvnYbcBJ1w==" crossorigin="anonymous"></script>
 <script src="assets/script/index.js"></script>
+<script src="assets/script/checkonline.js"></script>
 </html>

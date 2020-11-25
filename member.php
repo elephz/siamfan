@@ -1,5 +1,4 @@
 <?php include "api/command.php";?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,16 +25,16 @@
         <div class="col-md-9 col-sm-12">
            <div class="row">
                <div class="col">
-                   <span><?php echo $rowmb["Description"];  ?></span>
+                   <span><?php echo $rowmb["Description"]; ?></span>
                </div>
            </div>
                 <div class="Usercard2">
-                    <div class="content-user">
-                        <img src="assets/image/avatar.png" alt="" >
-                        <h4><?php echo $rowmb["Name"];  ?></h4>
+                    <div class="content-user"> 
+                        <img src="<?php echo image($rowmb["pvc_img"], $rowmb["img"]); ?>" alt="" >
+                        <h4><?php echo $rowmb["Name"]; ?></h4>
                         <div class='gender-age my-1'>
-                            <span class="label gender <?php echo classgener($getderid); ?>"><?php echo $rowmb["Gender_name"];  ?></span>
-                            <span class="label"><?php echo $rowmb["age"];  ?></span>
+                            <span class="label gender <?php echo classgener($getderid); ?>"><?php echo $rowmb["Gender_name"]; ?></span>
+                            <span class="label"><?php echo $rowmb["age"]; ?></span>
                             <a class="ml-1 bullhorn"><i class="fas fa-bullhorn"></i> +1 </a>
                         </div>
                     </div>
@@ -51,23 +50,23 @@
                             </tr>
                             <tr>
                                 <td class='left-td'>เบอร์โทร</td>
-                                <td  class='right-td'><span><?php echo $rowmb['phone']; ?></span></td>
+                                <td  class='right-td'><span><?php echo privacy($rowmb['pvc_phone'],$rowmb['phone']); ?></span></td>
                             </tr>
                             <tr>
                                 <td class='left-td'>อีเมล์</td>
-                                <td  class='right-td'><span><?php echo $rowmb['e_mail']; ?></span></td>
+                                <td  class='right-td'><span><?php echo privacy($rowmb['pvc_email'],$rowmb['e_mail']); ?></span></td>
                             </tr>
                             <tr>
                                 <td class='left-td'>ไอดีไลน์</td>
-                                <td  class='right-td'><span><?php echo $rowmb['line_id']; ?></span></td>
+                                <td  class='right-td'><span><?php echo privacy($rowmb['pvc_line'],$rowmb['line_id']); ?></span></td>
                             </tr>
                             <tr>
                                 <td class='left-td'>เฟซบุ๊ก</td>
-                                <td  class='right-td'><span><?php echo $rowmb['facebook']; ?></span></td>
+                                <td  class='right-td'><span><?php echo privacy($rowmb['pvc_facebook'],$rowmb['facebook']); ?></span></td>
                             </tr>
                             <tr>
                                 <td class='left-td'>อัปเดตล่าสุด</td>
-                                <td  class='right-td'><span><i class="far fa-clock"></i> <?php echo  onlinetime($daydiff,$timediff,$lastonlinetime) ?></span></td>
+                                <td  class='right-td'><span><i class="far fa-clock"></i> <?php echo onlinetime($daydiff, $timediff, $lastonlinetime) ?></span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -90,48 +89,48 @@
             <div class="row my-4 ">
                 <h4>แนะนำเพื่อนคุย</h4>
             </div>
-            
+
             <div class="row">
-               
-                <?php 
-                	while($rowgd = mysqli_fetch_assoc($qr_gender_member)) { 
-                    $gdid = $rowgd["User_id"];
-                    $bullhorn = mysqli_query($con,"SELECT voted_id FROM `tb_vote` WHERE voted_id = '$gdid'") or die('error. ' . mysqli_error($con));
-                    $bullhorncount = $bullhorn->num_rows;
-                    ?>
+
+                <?php
+while ($rowgd = mysqli_fetch_assoc($qr_gender_member)) {
+	$gdid = $rowgd["User_id"];
+	$bullhorn = mysqli_query($con, "SELECT voted_id FROM `tb_vote` WHERE voted_id = '$gdid'") or die('error. ' . mysqli_error($con));
+	$bullhorncount = $bullhorn->num_rows;
+	?>
                 <div class="col-md-3 col-sm-6 p-0">
                     <a href="">
                         <div class="Usercard2">
                             <div class="content-user">
-                                <img src="assets/image/avatar.png" alt="" >
-                                <h5><?php echo $rowgd["Name"];  ?></h5>
+                                <img src="<?php echo image($rowmb["pvc_img"], $rowmb["img"]); ?>" alt="" >
+                                <h5><?php echo $rowgd["Name"]; ?></h5>
                                 <div class='gender-age my-1'>
-                                    <span class="label gender <?php echo classgener($rowgd["Gender_id"]); ?>"><?php echo $rowgd["Gender_name"];  ?></span>
-                                    <span class="label"><?php echo $rowgd["age"];  ?></span>
+                                    <span class="label gender <?php echo classgener($rowgd["Gender_id"]); ?>"><?php echo $rowgd["Gender_name"]; ?></span>
+                                    <span class="label"><?php echo $rowgd["age"]; ?></span>
                                 </div>
                                 <div class="userdescription">
-                                    <?php echo $rowgd["Description"];  ?>
+                                    <?php echo $rowgd["Description"]; ?>
                                 </div>
                                 <div class="province-target text-left my-1">
-                                    <i class="fas fa-street-view"></i> <?php echo $rowgd["Province_name"];  ?> <br>
-                                    <i class="fas fa-search"></i> <?php echo $rowgd["Target_name"];  ?>
+                                    <i class="fas fa-street-view"></i> <?php echo $rowgd["Province_name"]; ?> <br>
+                                    <i class="fas fa-search"></i> <?php echo $rowgd["Target_name"]; ?>
                                 </div>
                             </div>
                             <div class="content-socail ">
                                 <ul class="list-inline">
-                                   <?php echo social($rowgd["facebook"],$rowgd["line_id"],$rowgd["phone"]); ?>
+                                   <?php echo social($rowgd["facebook"], $rowgd["line_id"], $rowgd["phone"]); ?>
                                 </ul>
                             </div>
                             <div class="content-viewcount p-1">
                                 <span class='pull-left'><i class="fa fa-bullhorn"></i> <?php echo $bullhorncount; ?></span>
-                                <span class='float-right'><?php echo  onlinetime($rowgd['daydiff'],$rowgd['timediff'],$rowgd['lastonline_time']); ?></span>
+                                <span class='float-right'><?php echo onlinetime($rowgd['daydiff'], $rowgd['timediff'], $rowgd['lastonline_time']); ?></span>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
                     </a>
-                  
+
                 </div>
-                <?php } ?>
+                <?php }?>
             </div>
             <div class="row my-4">
                 <h4>หาเพื่อน<?php echo $rowmb["Gender_name"]; ?>ตามอายุ</h4>
@@ -189,10 +188,10 @@
                    </thead>
                    <tbody>
                         <tr>
-                            <?php 
-                            foreach($aftersort as $key => $val){?>
+                            <?php
+foreach ($aftersort as $key => $val) {?>
                                 <td><a href="#"><?php echo $val; ?></a></td>
-                           <?php } ?>
+                           <?php }?>
                         </tr>
                    </tbody>
                 </table>
@@ -206,7 +205,7 @@
                     <a href="">
                         <div class="Carduser">
                             <div class="grid-item-left text-center">
-                                <img src="assets/image/avatar.png" alt="" class='w-100'>
+                                <img src="<?php echo image($rowmb["pvc_img"], $rowmb["img"]); ?>" alt="" class='w-100'>
                             <p class='online'>
                                 <i class="far fa-eye"></i> <?php echo $rowppr['view_count']; ?>
                             </p>
@@ -217,7 +216,7 @@
                                 <?php echo $rowppr['Description']; ?>
                                 </div>
                                 <div class='gender-age my-1'>
-                                    <span class="label gender <?php echo  classgener($rowppr['Gender_id']); ?>"><?php echo $rowppr['Gender_name'] ?></span>
+                                    <span class="label gender <?php echo classgener($rowppr['Gender_id']); ?>"><?php echo $rowppr['Gender_name'] ?></span>
                                     <span class="label"><?php echo $rowppr['age'] ?></span>
                                 </div>
                                 <div class="province-target">
@@ -228,7 +227,7 @@
                         </div>
                     </a>
                 </div>
-                <?php } ?>
+                <?php }?>
             </div>
         </div>
     </div>
@@ -243,14 +242,14 @@
                     <div class="row">
                         <div class="col text-center p-5">
 
-                       
+
                             <div class="content-user">
-                                <img src="assets/image/avatar.png" alt="" >
-                                <h4><?php echo $rowmb["Name"];  ?></h4>
+                                <img src="<?php echo image($rowmb["pvc_img"], $rowmb["img"]); ?>" alt="" >
+                                <h4><?php echo $rowmb["Name"]; ?></h4>
                                 <div class='gender-age my-1'>
-                                    <span class="label gender <?php echo $classgender; ?>"><?php echo $rowmb["Gender_name"];  ?></span>
-                                    <span class="label"><?php echo $rowmb["age"];  ?></span><br>
-                                    <span class="label"><?php echo $rowmb["Target_name"];  ?></span>
+                                    <span class="label gender <?php echo $classgender; ?>"><?php echo $rowmb["Gender_name"]; ?></span>
+                                    <span class="label"><?php echo $rowmb["age"]; ?></span><br>
+                                    <span class="label"><?php echo $rowmb["Target_name"]; ?></span>
                                 </div>
                             </div>
                             <table class='w-100 mx-auto  '>
@@ -275,31 +274,31 @@
                                             <div class="form-check">
                                                 <input class="form-check-input reson" type="radio" name="reson" id="exampleRadios2" value="เอาข้อมูลผู้อื่นมาโพสต์">
                                                 <label class="form-check-label" for="exampleRadios2">
-                                                    เอาข้อมูลผู้อื่นมาโพสต์ 
+                                                    เอาข้อมูลผู้อื่นมาโพสต์
                                                 </label>
                                             </div>
 
                                             <div class="form-check">
                                                 <input class="form-check-input reson" type="radio" name="reson" id="exampleRadios2" value="หาดพิงผู้อื่นให้ได้รับความเสียหาย">
                                                 <label class="form-check-label" for="exampleRadios2">
-                                                    หาดพิงผู้อื่นให้ได้รับความเสียหาย 
+                                                    หาดพิงผู้อื่นให้ได้รับความเสียหาย
                                                 </label>
                                             </div>
 
                                             <div class="form-check">
                                                 <input class="form-check-input reson" type="radio" name="reson" id="exampleRadios2" value="โกหก หลอกลวง หลอกให้เสียทรัพย์">
                                                 <label class="form-check-label" for="exampleRadios2">
-                                                    โกหก หลอกลวง หลอกให้เสียทรัพย์ 
+                                                    โกหก หลอกลวง หลอกให้เสียทรัพย์
                                                 </label>
                                             </div>
 
                                             <div class="form-check">
                                                 <input class="form-check-input reson" type="radio" name="reson" id="exampleRadios2" value="เกี่ยวข้องกับสิ่งผิดกฎหมาย">
                                                 <label class="form-check-label" for="exampleRadios2">
-                                                    เกี่ยวข้องกับสิ่งผิดกฎหมาย 
+                                                    เกี่ยวข้องกับสิ่งผิดกฎหมาย
                                                 </label>
                                             </div>
-                                           
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -332,4 +331,5 @@
 <script src="assets/bootstrap/js/bootstrap.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js" integrity="sha512-MqEDqB7me8klOYxXXQlB4LaNf9V9S0+sG1i8LtPOYmHqICuEZ9ZLbyV3qIfADg2UJcLyCm4fawNiFvnYbcBJ1w==" crossorigin="anonymous"></script>
 <script src="assets/script/member.js"></script>
+<script src="assets/script/checkonline.js"></script>
 </html>

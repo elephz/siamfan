@@ -14,85 +14,13 @@
 </head>
 <body>
 <?php include "compostion/header.php";?>
-<?php 
- $title = "";
- $data = " ";
- $typepara = " " ;
-if(isset($_GET['t'])){
-    $typepara = "t";
-    $type = $_GET['t'];
-   
-    if($type == "search"){
-        $title = "<i class='fas fa-search-plus'></i> ค้นหาเพื่อน";
-        $data = "search";
-    }
-} 
-if(isset($_GET['target'])){
-    $target = $_GET['target'];
-    $typepara = "target";
-    $arr_target = [
-        '1'=>'หาคู่',
-        '2'=>'หาแฟน',
-        '3'=>'หากิ๊ก',
-        '4'=>'หาที่ปรึกษา',
-        '5'=>'หาพี่ชาย',
-        '6'=>'พาพี่สาว',
-        '7'=>'หาน้องชาย',
-        '8'=>'หาน้องสาว'
-    ];
-    foreach($arr_target as $key => $value){
-        if($target == $key){
-            $title = "<i class='fas fa-user-friends'></i> ".$value;
-            $data = $key;
-        }
-    }
-} 
-if(isset($_GET['g'])){
-    $typepara = "g";
-    $arr_g = [
-        'men'=>'ชาย',
-        'women'=>'หญิง',
-        'gay'=>'เกย์',
-        'genall'=>'สาวสอง',
-        'less'=>'เลสเบี้ยน',
-        'indy'=>'ดี้',
-        'tom'=>'ทอม'
-    ];
-    $g = $_GET['g'];
-    foreach($arr_g as $key => $value){
-        if($g == $key){
-            $title = "<i class='fas fa-user-friends'></i> หาเพื่อน".$value;
-            $data = $key;
-        }
-    }
-}
-if(isset($_GET['social'])){
-    $typepara = "social";
-    $arr_social = [
-        'line'=>'ไลน์',
-        'facebook'=>'เฟซบุ๊ก',
-        'phone'=>'เบอร์โทรศัพท์'
-    ];
-    $social = $_GET['social'];
-    foreach($arr_social as $key => $value){
-        if($social == $key){
-            $title = "<i class='fas fa-user-friends'></i> หาเพื่อนที่มี".$value;
-            $data = $key;
-        }
-    }
-}
-    echo '<script type="text/javascript">';
-    echo "var typepara = '$typepara';";
-    echo "var data = '$data';";
-	echo '</script>';
-?>
 <div class="container mt-2">
     <div class="row">
         <div class="col text-center">
                 <h5> <?php echo $title; ?></h5>
         </div>
     </div>
-   
+
     <div class="row">
         <form class="form-inline fillter mx-auto w-100">
             <input type="text" class="form-control f-sl-text   mb-2 mr-sm-2 " id="inlineFormInputName2" placeholder="คำค้น">
@@ -105,10 +33,10 @@ if(isset($_GET['social'])){
             </select>
             <select class="form-control f-sl-gender  mb-2 mr-sm-2 " name="f-sl-gender" >
                 <option value="">เพศ</option>
-                <?php while ($Search_row1 = mysqli_fetch_assoc($base_selectGender)) { ?>
+                <?php while ($Search_row1 = mysqli_fetch_assoc($base_selectGender)) {?>
                 <option value="<?php echo $Search_row1['Gender_id']; ?>"><?php echo $Search_row1['Gender_name']; ?></option>
-                <?php } ?>
-               
+                <?php }?>
+
             </select>
             <select class="form-control f-sl-age_first  mb-2 mr-sm-2 " name="f-sl-age_first" >
                 <option value="">อายุ</option>
@@ -125,14 +53,14 @@ if(isset($_GET['social'])){
             </select>
             <select class="form-control   mb-2 f-sl-province mr-sm-2 " name="f-sl-province" >
                 <option value="">จังหวัด</option>
-                <?php while ($Search_row2 = mysqli_fetch_assoc($base_selectprovince)) { ?>
+                <?php while ($Search_row2 = mysqli_fetch_assoc($base_selectprovince)) {?>
                     <option value="<?php echo $Search_row2['Province_id']; ?>"><?php echo $Search_row2['Province_name']; ?></option>
                 <?php }?>
-              
+
             </select>
             <select class="form-control f-sl-target mb-2 mr-sm-2 " name="f-sl-target" >
                 <option value="">คนที่ต้องการ</option>
-                <?php while ($Search_row3 = mysqli_fetch_assoc($base_seletarget)) { ?>
+                <?php while ($Search_row3 = mysqli_fetch_assoc($base_seletarget)) {?>
                     <option value="<?php echo $Search_row3['Target_id']; ?>"><?php echo $Search_row3['Target_name']; ?></option>
                 <?php }?>
             </select>
@@ -155,13 +83,13 @@ if(isset($_GET['social'])){
         </div>
     </div>
     <div class="row loopcontent">
-       
+
     </div>
     <div class="row pagination-row">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item previous"><a class="page-link btn-control" control='left' href="#">Previous</a></li>
-               
+
                 <li class="page-item"><a class="page-link btn-control" control='right' href="#">Next</a></li>
             </ul>
         </nav>
@@ -172,4 +100,9 @@ if(isset($_GET['social'])){
 <script src="assets/jquery/jquery.js"></script>
 <script src="assets/bootstrap/js/bootstrap.js"></script>
 <script src="assets/script/search.js"></script>
+<script src="assets/script/checkonline.js"></script>
+<script>
+var obj = JSON.parse('<?php echo json_encode($obj) ?>');
+var agearr = JSON.parse('<?php echo json_encode($agearr) ?>');
+</script>
 </html>

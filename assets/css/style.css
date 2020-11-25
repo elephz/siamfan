@@ -10,7 +10,10 @@ body {
     font-family: 'Bai Jamjuree', sans-serif;
     color: black;
 }
-
+h5{
+    font-size: 14px;
+    font-weight: bold;
+}
 .form-control:focus {
     border-color: inherit;
     -webkit-box-shadow: none;
@@ -320,7 +323,7 @@ a {
 
 .btn-custom {
     background-color: #7986cb;
-    padding: 10px 20px;
+    padding: 15px 20px;
     width: 100%;
     transition: 0.3s;
     color: white;
@@ -423,6 +426,42 @@ table tr, table tr th, td {
     transform: rotate(360deg); 
     box-shadow: none;
 }
-  /**   
-    hover effect
-*/
+.footer{
+    color: #8c8898;
+    text-align: center;
+    margin: 20px 0 0 0;
+    position: relative;
+    border-top: solid 1px #eaeaea;
+}
+.footer-content{
+    padding:25px 0px;
+}
+h2{
+    font-size: 26px;
+}
+
+@media only screen and (max-width: 768px) {
+  
+    [class*="col-"] {
+      width: 100%;
+    }
+
+    .grid-4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr ;
+        grid-gap: 5px;
+        margin: 0 4px;
+    }
+    .allgender-age thead tr th , .allgender-age tbody tr td {
+        font-size: 15px;
+        padding: 5px 5px;
+  }
+  ol,ul,dl{
+      padding-inline-start:0;
+     
+  }
+  .hover-effect1 ul li a{
+    margin: 5px;
+  }
+}
+ 
