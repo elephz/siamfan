@@ -21,8 +21,8 @@
         </div>
     </div>
 
-    <div class="row">
-        <form class="form-inline fillter mx-auto w-100">
+    <div class="row p-2">
+        <form class="form-inline fillter mx-auto ">
             <input type="text" class="form-control f-sl-text   mb-2 mr-sm-2 " id="inlineFormInputName2" placeholder="คำค้น">
 
             <select class="form-control f-sl-socail  mb-2 mr-sm-2 " name="f-sl-socail" >
@@ -95,7 +95,7 @@
         </nav>
     </div>
 </div>
-
+<?php include 'footer.php';?>
 </body>
 <script src="assets/jquery/jquery.js"></script>
 <script src="assets/bootstrap/js/bootstrap.js"></script>

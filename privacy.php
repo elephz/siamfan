@@ -3,8 +3,8 @@
         <h4 class='d-inline-block mb-2'><i class="fas fa-lock"></i> การตั้งค่าและเครื่องมือความเป็นส่วนตัว</h4>
     </div>
 </div>
-<div class="row">
-    <table class='w-75 mx-auto'>
+<div class="row p-2">
+    <table class='seting-table mx-auto'>
         <tbody id="td-profile">
             <tr>
                 <td class='left-td'>รูปโปรไฟล์</td>

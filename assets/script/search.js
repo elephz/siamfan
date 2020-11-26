@@ -145,7 +145,6 @@ function run(typepara, data) {
         $(".fillter").submit();
     })
     $("body").on("click", ".btn-control", function (e) {
-
         e.preventDefault();
         currentpage = Number(currentpage);
         console.log(totalpage);
@@ -182,7 +181,7 @@ function run(typepara, data) {
 
                 let arr = result.respond.data;
                 let total = result.respond.amount;
-
+                let arr2 = result.respond.arr2;
                 if (!isEmpty(arr)) {
 
                     $('#found').html(total)
@@ -195,13 +194,24 @@ function run(typepara, data) {
                         //time
                         let time;
                         if (v.daydiff == "0") {
-                            let bftime = v.timediff;
+                            let bftime = v.dff;
+                            bftime = String(bftime);
                             time = bftime.substring(0, 2);
-                            if (time == "00") {
-                                time = bftime.substring(3, 4);
-                                time = time + " นาทีที่แล้ว";
+                            if(Number(v.diff) < 3){
+                                time = "<span class='online'><img  src='https://www.siamfans.com/media/img/user_online.gif' alt=''><span>ออนไลน์</span></span>";
+                            }
+                            else if (Number(v.diff) < 60) {
+                                // time = bftime;
+                                time = v.timediff.substring(3, 5)+ " นาทีที่แล้ว";
+                                    if(v.timediff.substring(3, 4) == '0'){
+                                        time = v.timediff.substring(4, 5)+' นาทที่แล้ว';
+                                    }
+                                // time = v.timediff;
                             } else {
-                                time = bftime.substring(0, 2);
+                                time = v.timediff.substring(0, 2);
+                                    if(v.timediff.substring(0, 1) == "0"){
+                                        time = v.timediff.substring(1, 2);
+                                    }
                                 time = time + " ชั่วโมงที่แล้ว";
                             }
 
@@ -227,10 +237,10 @@ function run(typepara, data) {
 
 
                         //setimage
-
+                        let i = 0;
                         rows +=
 
-                            "<div class='col-md-2 col-sm-6 p-0'>" +
+                            "<div class='col-md-2 col-sm-6 col-6 p-0'>" +
                             " <a href='member?m=" + v.User_id + "'>" +
                             "<div class='Usercard2'>" +
                             "<div class='content-user'>" +
@@ -255,7 +265,7 @@ function run(typepara, data) {
                             "</ul>" +
                             "</div>" +
                             "<div class='content-viewcount p-1'>" +
-                            " <span class='pull-left'><i class='fa fa-bullhorn'></i> 1</span>" +
+                            " <span class='pull-left'><i class='fa fa-bullhorn'></i> "+arr2[i++]+"</span>" +
                             " <span class='float-right'>" + time + "</span>" +
                             "<div class='clearfix'></div>" +
                             "</div>" +
@@ -273,6 +283,9 @@ function run(typepara, data) {
                         "<div class='col text-center my-3'>" +
                         "<h4>ไม่พบข้อมูล!</h4>" +
                         "</div>";
+                    $(".pagination-row").hide();
+                }
+                if (total < 30) {
                     $(".pagination-row").hide();
                 }
                 $(".loopcontent").append(rows);

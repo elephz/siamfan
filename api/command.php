@@ -101,14 +101,27 @@ function myfunction($a,$b)
 		}
 		return $val;
 	}
+	function online($munite,$lastonline){
+		$val;
+			if($munite < 3){
+				$val = "<p class='online'><img  src='https://www.siamfans.com/media/img/user_online.gif' alt=''><span>ออนไลน์</span></p>";
+			} 
+			else if($munite  < 61 ){
+				$val = $munite."นาทีที่แล้ว";
+			}
+	}
 	function onlinetime($daydiff, $timediff, $lastonlinetime)
 	{
 		if ($daydiff == "0") {
 			$bftime = $timediff;
 			$time = substr($bftime, 0, 2);
 			if ($time == "00") {
-				$time1 = substr($bftime, 3, 4);
+				$time1 = substr($bftime, 3,2);
 				$time = $time1 . "นาทีที่แล้ว";
+				if($time < 3){
+					$time = "<span class='online'><img  src='https://www.siamfans.com/media/img/user_online.gif' alt=''><span>ออนไลน์</span></span>";
+				}
+				// $time = $bftime." = >".$time1;
 			} else {
 				$time1 = substr($bftime, 0, 2);
 				$time = $time1 . " ชั่วโมงที่แล้ว";

@@ -10,10 +10,12 @@ body {
     font-family: 'Bai Jamjuree', sans-serif;
     color: black;
 }
-h5{
+
+h5 {
     font-size: 14px;
     font-weight: bold;
 }
+
 .form-control:focus {
     border-color: inherit;
     -webkit-box-shadow: none;
@@ -74,10 +76,12 @@ small {
 .col-md-9>.row {
     border-bottom: 1px dotted #eaeaea;
 }
-.f8coloe{
+
+.f8coloe {
     background-color: #f8f8f8;
     border-radius: 4px;
 }
+
 .gender-list>ul {
     list-style-type: none;
     margin: 0;
@@ -354,7 +358,8 @@ table tr, table tr th, td {
     padding: 20px 20px;
     text-align: center;
 }
-.allgender-age thead tr th , .allgender-age tbody tr td {
+
+.allgender-age thead tr th, .allgender-age tbody tr td {
     border: 1px solid #ddd;
     color: #555;
     font-size: 16px;
@@ -363,6 +368,7 @@ table tr, table tr th, td {
     border-left: none;
     border-right: none;
 }
+
 .form-input-custom {
     width: 100%;
     padding: 12px 20px;
@@ -395,73 +401,241 @@ table tr, table tr th, td {
 }
 
 .cropimg {
-    border:1px solid #eee;
+    border: 1px solid #eee;
     width: 100px;
     display: inline-block;
 }
 
-
 /**   
  hover effect
 */
-.hover-effect1 {   text-align: center; }
-.hover-effect1 ul li { display: inline-block; }
-.hover-effect1 ul li a { 
-    color: #fff; 
+
+.hover-effect1 {
+    text-align: center;
+}
+
+.hover-effect1 ul li {
+    display: inline-block;
+}
+
+.hover-effect1 ul li a {
+    color: #fff;
     line-height: 100px;
-    display: inline-block; 
+    display: inline-block;
     width: 100px;
     -webkit-transition: all 1.3s ease;
-    -moz-transition: all 1.3s ease; -ms-transition: all 1.3s ease;
-    -o-transition: all 1.3s ease; transition: all 1.3s ease; 
-    border-radius: 50%; 
+    -moz-transition: all 1.3s ease;
+    -ms-transition: all 1.3s ease;
+    -o-transition: all 1.3s ease;
+    transition: all 1.3s ease;
+    border-radius: 50%;
     box-shadow: 0 16px 34px 7px rgba(121, 121, 121, .1);
 }
-.hover-effect1 ul li:hover a { 
+
+.hover-effect1 ul li:hover a {
     border-radius: 20%;
-    -moz-transform: rotate(360deg); 
-    -webkit-transform: rotate(360deg); 
-    -o-transform: rotate(360deg); 
-    -ms-transform: rotate(360deg); 
-    transform: rotate(360deg); 
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
     box-shadow: none;
 }
-.footer{
+
+.footer {
     color: #8c8898;
     text-align: center;
     margin: 20px 0 0 0;
     position: relative;
     border-top: solid 1px #eaeaea;
 }
-.footer-content{
-    padding:25px 0px;
+
+.footer-content {
+    padding: 25px 0px;
 }
-h2{
+
+h2 {
     font-size: 26px;
+}
+.seting-table{
+    width:90%;
+}
+.mobile-uer{
+    position: absolute;
+    top: 3px;
+    right: 68px;
+    display: none;
+}
+.first-container {
+    position: relative;
+}
+
+#menuToggle {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#menuToggle a {
+    text-decoration: none;
+    color: #232323;
+    transition: color 0.3s ease;
+}
+
+#menuToggle a:hover {
+    color: tomato;
+}
+
+#menuToggle input {
+    display: block;
+    width: 40px;
+    height: 32px;
+    position: absolute;
+    top: -7px;
+    left: -5px;
+    cursor: pointer;
+    opacity: 0;
+    /* hide this */
+    z-index: 2;
+    /* and place it over the hamburger */
+    -webkit-touch-callout: none;
+}
+
+/*
+ * Just a quick hamburger
+ */
+
+#menuToggle span {
+    display: block;
+    width: 33px;
+    height: 4px;
+    margin-bottom: 5px;
+    position: relative;
+    background: black;
+    border-radius: 3px;
+    z-index: 1;
+    transform-origin: 4px 0px;
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), opacity 0.55s ease;
+}
+
+#menuToggle span:first-child {
+    transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2) {
+    transform-origin: 0% 100%;
+}
+
+/* 
+ * Transform all the slices of hamburger
+ * into a crossmark.
+ */
+
+#menuToggle input:checked~span {
+    opacity: 1;
+    transform: rotate(45deg) translate(-2px, -1px);
+    background: #232323;
+}
+
+/*
+ * But let's hide the middle one.
+ */
+
+#menuToggle input:checked~span:nth-last-child(3) {
+    opacity: 0;
+    transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+/*
+ * Ohyeah and the last one should go the other direction
+ */
+
+#menuToggle input:checked~span:nth-last-child(2) {
+    transform: rotate(-45deg) translate(0, -1px);
+}
+
+/*
+ * Make this absolute positioned
+ * at the top left of the screen
+ */
+
+#menu {
+    position: absolute;
+    width: 300px;
+    border-radius: 4px;
+    margin: -45px 0 0 -100px;
+    padding: 15px;
+    padding-top: 17px;
+    background: #ededed;
+    list-style-type: none;
+    -webkit-font-smoothing: antialiased;
+    transform-origin: 0% 0%;
+    transform: translate(0, -108%);
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+}
+
+#menu li {
+    padding: 8px 0;
+    font-size: 22px;
+    transform: 0.3s;
+}
+
+#menu li :hover {
+    padding-left: 5px;
+}
+
+/*
+ * And let's slide it in from the left
+ */
+
+#menuToggle input:checked~ul {
+    transform: none;
 }
 
 @media only screen and (max-width: 768px) {
-  
     [class*="col-"] {
-      width: 100%;
+        width: 100%;
     }
-
     .grid-4 {
         display: grid;
-        grid-template-columns: 1fr 1fr ;
+        grid-template-columns: 1fr 1fr;
         grid-gap: 5px;
         margin: 0 4px;
     }
-    .allgender-age thead tr th , .allgender-age tbody tr td {
+    .allgender-age thead tr th, .allgender-age tbody tr td {
         font-size: 15px;
         padding: 5px 5px;
-  }
-  ol,ul,dl{
-      padding-inline-start:0;
-     
-  }
-  .hover-effect1 ul li a{
-    margin: 5px;
-  }
+    }
+    ol, ul, dl {
+        padding-inline-start: 0;
+    }
+    .hover-effect1 ul li a {
+        margin: 5px;
+    }
+    .navbar-light {
+        padding-left: 0px;
+    }
+    header.header {
+        margin-left: -15px !important;
+    }
+    .mobile-uer{
+        display: block;
+    }
+
+    .hover-effect1 ul li a {
+        line-height: 50px;
+        width: 50px;
+    }
+    .Carduser{
+        padding:10px;
+        grid-gap:15px;
+        
+    }
+    .fillter > .btn-custom1{
+        width: 100%;
+    }
 }
- 

@@ -24,6 +24,7 @@
         </div>
         <div class="col-md-9 col-sm-12">
             <?php if (isset($_GET['p'])) {
+                $vote = false;
 	if ($_GET['p'] == 'setting') {
 		include 'setting.php';
 	}
@@ -31,12 +32,18 @@
 		include 'security.php';
 	}else if ($_GET['p'] == 'privacy') {
 		include 'privacy.php';
-	}
+	}else if ($_GET['p'] == 'voted') {
+		include 'voted.php';
+    }
+    
+    echo '<script type="text/javascript">';
+    echo "var vote = true;";
+    echo '</script>';
 }?>
         </div>
     </div>
 </div>
-
+<?php include 'footer.php';?>
 </body>
 <script src="assets/jquery/jquery.js"></script>
 <script src="assets/bootstrap/js/bootstrap.js"></script>

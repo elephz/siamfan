@@ -37,6 +37,11 @@ $(document).ready(function () {
         e.preventDefault();
         let username = $("#username").val();
         let password = $("#password").val();
+        if(username == ""){
+            swal("","กรุณาใส่ข้อมูลให้ครบถ้วน","error");
+            return
+        }
+        
         let action = 'login';
         data = { username, password, action }
         $.post("api/api.php", data, function (res) {

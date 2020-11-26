@@ -108,6 +108,9 @@ if (isset($_GET['m'])) {
 	$count_ppr_gender = mysqli_query($con, "SELECT User_id FROM tb_User WHERE u_Gender_id = $getderid AND tb_User.view_count > 500");
 	$countppr = $count_ppr_gender->num_rows;
 	$ranppr = rand(0, $countppr - 6);
+	if($ranppr < 0){
+		$ranppr = 0;
+	}
 	$sql_poppular_gender = "SELECT
                             TIMEDIFF(now(), tb_User.lastonline_time) as timediff,
                             DATEDIFF(now(), tb_User.lastonline_time) as daydiff,

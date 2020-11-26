@@ -22,7 +22,7 @@
         <div class="col-md-3 col-sm-12 p-2">
             <?php include "compostion/left.php";?>
         </div>
-        <div class="col-md-9 col-sm-12">
+        <div class="col-md-9 col-sm-12 ">
            <div class="row">
                <div class="col">
                    <span><?php echo $rowmb["Description"]; ?></span>
@@ -38,7 +38,7 @@
                             <a class="ml-1 bullhorn"><i class="fas fa-bullhorn"></i> +1 </a>
                         </div>
                     </div>
-                    <table class='w-75 mx-auto  '>
+                    <table class='mx-auto seting-table  '>
                         <tbody id="td-profile">
                             <tr>
                                 <td class='left-td'>กำลังมองหา</td>
@@ -98,11 +98,11 @@ while ($rowgd = mysqli_fetch_assoc($qr_gender_member)) {
 	$bullhorn = mysqli_query($con, "SELECT voted_id FROM `tb_vote` WHERE voted_id = '$gdid'") or die('error. ' . mysqli_error($con));
 	$bullhorncount = $bullhorn->num_rows;
 	?>
-                <div class="col-md-3 col-sm-6 p-0">
-                    <a href="">
+                <div class="col-md-3 col-sm-6 col-6 p-0">
+                    <a href="member?m=<?php echo $rowgd['User_id'] ; ?>">
                         <div class="Usercard2">
                             <div class="content-user">
-                                <img src="<?php echo image($rowmb["pvc_img"], $rowmb["img"]); ?>" alt="" >
+                                <img src="<?php echo image($rowgd["pvc_img"], $rowgd["img"]); ?>" alt="" >
                                 <h5><?php echo $rowgd["Name"]; ?></h5>
                                 <div class='gender-age my-1'>
                                     <span class="label gender <?php echo classgener($rowgd["Gender_id"]); ?>"><?php echo $rowgd["Gender_name"]; ?></span>
@@ -135,16 +135,16 @@ while ($rowgd = mysqli_fetch_assoc($qr_gender_member)) {
             <div class="row my-4">
                 <h4>หาเพื่อน<?php echo $rowmb["Gender_name"]; ?>ตามอายุ</h4>
             </div>
-            <div class="row">
+            <div class="row p-2">
                <table class='w-100'>
                    <thead>
                         <tr>
-                            <th>  อายุ18-24 ปี  </th>
-                            <th>  อายุ25-34 ปี  </th>
-                            <th>  อายุ35-44 ปี  </th>
-                            <th>  อายุ45-54 ปี  </th>
-                            <th>  อายุ55-64 ปี  </th>
-                            <th>  อายุ65 ปีขึ้นไป  </th>
+                            <th>  18-24 ปี  </th>
+                            <th>  25-34 ปี  </th>
+                            <th>  35-44 ปี  </th>
+                            <th>  45-54 ปี  </th>
+                            <th>  55-64 ปี  </th>
+                            <th>  65 ปีขึ้นไป  </th>
                         </tr>
                    </thead>
                    <tbody>
@@ -164,7 +164,7 @@ while ($rowgd = mysqli_fetch_assoc($qr_gender_member)) {
             </div>
             <div class="row">
             <?php while ($province = mysqli_fetch_assoc($seleceprovince_member)) {?>
-                <div class="col-md-2 col-sm-4 p-1">
+                <div class="col-md-2 col-sm-4 col-6 p-1">
                     <a class='province-icon ' href="<?php echo "#" . $province['u_Province_id']; ?>"><i class="fas fa-street-view"></i> <?php echo $province['Province_name'] . '(' . $province['count'] . ')'; ?> </a>
                 </div>
             <?php }?>
@@ -172,7 +172,7 @@ while ($rowgd = mysqli_fetch_assoc($qr_gender_member)) {
             <div class="row my-4 ">
                 <h4>หาเพื่อน<?php echo $rowmb["Gender_name"]; ?>ที่กำลังมองหา</h4>
             </div>
-            <div class="row">
+            <div class="row p-2">
                 <table class='w-100'>
                    <thead>
                         <tr>
@@ -201,11 +201,11 @@ foreach ($aftersort as $key => $val) {?>
             </div>
             <div class="row p-0">
                 <?php while ($rowppr = mysqli_fetch_assoc($poppula_gender)) {?>
-                <div class="col-md-4 col-sm-12 p-1">
-                    <a href="">
+                <div class="col-md-4 col-sm-6 col-6 p-1">
+                    <a href="member?m=<?php echo $rowppr['User_id'] ?>">
                         <div class="Carduser">
                             <div class="grid-item-left text-center">
-                                <img src="<?php echo image($rowmb["pvc_img"], $rowmb["img"]); ?>" alt="" class='w-100'>
+                                <img src="<?php echo image($rowppr["pvc_img"], $rowppr["img"]); ?>" alt="" class='w-100'>
                             <p class='online'>
                                 <i class="far fa-eye"></i> <?php echo $rowppr['view_count']; ?>
                             </p>
@@ -326,6 +326,8 @@ foreach ($aftersort as $key => $val) {?>
     </div>
         <!-- modal -->
 </div>
+                </div>
+<?php include 'footer.php';?>
 </body>
 <script src="assets/jquery/jquery.js"></script>
 <script src="assets/bootstrap/js/bootstrap.js"></script>

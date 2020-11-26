@@ -15,9 +15,9 @@ if (isset($_SESSION["User_id"])) {
 	echo '</script>';
 }
 ?>
-<div class="container-fluid">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light ">
+<div class="container-fluid d-block first-container">
+
+            <nav class="container navbar navbar-expand-lg navbar-light ">
                 <a class="navbar-brand" href="index">
                     <img src="https://www.siamfans.com/media/logo/logo_201901201547964616.png" alt="" width="200">
                 </a>
@@ -32,11 +32,14 @@ if (isset($_SESSION["User_id"])) {
                             <?php
                                 $arr_header_gender = array('women', 'men', 'genall', 'gay', 'indy', 'tom', 'less');
                                 $i = 0;
+                                $arr = [];
                                 while ($row = mysqli_fetch_assoc($select_gender)) {?>
-                                                                                            <a class="dropdown-item" href="search?g=<?php echo $arr_header_gender[$i]; ?>"><?php echo $row['Gender_name']; ?></a>
-                                                                                            <?php
+                                    <a class="dropdown-item" href="search?g=<?php echo $arr_header_gender[$i]; ?>"><?php echo $row['Gender_name']; ?></a>
+                                    <?php
+                                    array_push($arr,$row);
                                 $i++;
-                                }?>
+                                }
+                                ?>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="search?t=search">ค้นหาเพื่อน</a>
                             </div>
@@ -49,5 +52,27 @@ if (isset($_SESSION["User_id"])) {
                     </div>
                 </div>
             </nav>
-        </div>
-    </div>
+            <?php if($login){ ?>
+          <div class="mobile-uer">
+              <a href="profile?p=setting">
+                <h1> <i class="far fa-id-card"></i></h1>
+               </a>
+          </div>
+                        <?php } ?>
+            <nav role="navigation" class='burger d-none'>
+                <div id="menuToggle">
+                   
+                    <input type="checkbox" />
+                   
+                    <span></span>
+                    <span></span>
+                    <span></span>
+           
+                    <ul id="menu">
+                        <?php foreach($arr as $key => $val){ ?>
+                        <a href="search?g=<?php echo $arr_header_gender[$key];  ?>"><li><?php echo $val['Gender_name'];  ?></li></a>
+                        <?php } ?>
+                    </ul>
+                </div>
+            </nav>
+</div>

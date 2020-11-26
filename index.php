@@ -148,11 +148,11 @@
 	$idcviewcount = $rowvotetoday["User_id"];
 	$sql_viewcount = mysqli_query($con, "SELECT voted_id FROM `tb_vote` WHERE voted_id = '$idcviewcount'") or die('error. ' . mysqli_error($con));
 	?>
-        <div class="col-md-2 col-sm-6 p-0">
+        <div class="col-md-2 col-sm-6 col-6 p-0">
             <a href="member?m=<?php echo $rowvotetoday['User_id']; ?>">
                 <div class="Usercard2">
                     <div class="content-user">
-                        <img src="assets/image/avatar.png" alt="" >
+                        <img src="<?php echo image($rowvotetoday['pvc_img'], $rowvotetoday['img']) ?>" alt="" >
                         <h5><?php echo $rowvotetoday['Name']; ?></h5>
                         <div class='gender-age my-1'>
                             <span class="label gender <?php echo classgener($rowvotetoday['Gender_id']) ?>"><?php echo $rowvotetoday['Gender_name'] ?></span>

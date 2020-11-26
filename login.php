@@ -32,12 +32,12 @@
                         <form class='w-100 mx-auto text-center'>
                             <div class="form-group text-left">
                                 <label for="email" >Username:</label>
-                                <input type="text" class="form-control" id='username' placeholder="Enter Username" >
+                                <input type="text" class="form-control" id='username' placeholder="Enter Username" required >
                             </div>
 
                             <div class="form-group text-left">
                                 <label for="pwd">Password:</label>
-                                <input type="password" class="form-control" id='password' placeholder="Enter password" >
+                                <input type="password" class="form-control" id='password' placeholder="Enter password" required >
                             </div>
                             <button  class="btn-custom1 py-2 px-4 w-75 btn-f-login">Login</button>
                         </form>
@@ -95,4 +95,5 @@
 <script src="assets/bootstrap/js/bootstrap.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js" integrity="sha512-MqEDqB7me8klOYxXXQlB4LaNf9V9S0+sG1i8LtPOYmHqICuEZ9ZLbyV3qIfADg2UJcLyCm4fawNiFvnYbcBJ1w==" crossorigin="anonymous"></script>
 <script src="assets/script/index.js"></script>
+<script src="assets/script/checkonline.js"></script>
 </html>

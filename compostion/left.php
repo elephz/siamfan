@@ -4,22 +4,35 @@
 $sqlimg = mysqli_query($con, "SELECT img FROM tb_User WHERE User_id = '$current_id'");
 	$row = mysqli_fetch_assoc($sqlimg);
 
-	?>
+    ?>
+    
+
+    
                 <div class="card mx-auto cardshadow">
                     <div class="card-header card-underline">
                         <img src="<?php if ($row['img'] == null) {
-		echo "assets/image/avatar.png";
-	} else {echo "assets/uploads/" . $row['img'];}?>" width="80">
+                                echo "assets/image/avatar.png";
+                            } else {echo "assets/uploads/" . $row['img'];}?>" width="80">
                         <span><?php echo $current_Name; ?> </span>
+                            <h1 class='d-inline-block float-right btn_burger2' >
+                                <a class='btn_burger2'  data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" >
+                                    <i class="fas fa-bars"></i>
+                                </a>
+                            </h1>
+                            <!-- <div class="clearfix"> -->
+
+                            <!-- </div> -->
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"> <a class='left-a' href="profile?p=setting"> ข้อมูลบัญชี </a></li>
-                        <li class="list-group-item"> <a class='left-a' href="profile?p=security"> การเข้าสู่ระบบ </a></li>
-                        <li class="list-group-item"> <a class='left-a' href="profile?p=privacy"> ความเป็นส่วนตัว </a></li>
-                        <li class="list-group-item"> <a class='left-a' href=""> เพื่อนที่โหวตให้เรา </a></li>
-                        <li class="list-group-item"> <a class='left-a' href="search?t=search"> ค้นหาเพื่อน </a></li>
-                        <li class="list-group-item "> <a class='left-a logout' href=""> ออกจากระบบ </a></li>
-                    </ul>
+                    <div class="ul-burger2" id="collapseExample">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"> <a class='left-a' href="profile?p=setting"> ข้อมูลบัญชี </a></li>
+                            <li class="list-group-item"> <a class='left-a' href="profile?p=security"> การเข้าสู่ระบบ </a></li>
+                            <li class="list-group-item"> <a class='left-a' href="profile?p=privacy"> ความเป็นส่วนตัว </a></li>
+                            <li class="list-group-item"> <a class='left-a' href="profile?p=voted"> เพื่อนที่โหวตให้เรา </a></li>
+                            <li class="list-group-item"> <a class='left-a' href="search?t=search"> ค้นหาเพื่อน </a></li>
+                            <li class="list-group-item "> <a class='left-a logout' href=""> ออกจากระบบ </a></li>
+                        </ul>
+                    </div>
                 </div>
                 <?php } else {?>
 <?php
@@ -84,7 +97,7 @@ $sql_leftgender = mysqli_query($con, "SELECT * FROM tb_gender ");
                     </div>
 
                 <?php }?>
-                <div class="card mx-auto mt-3 cardshadow d-sm-none d-md-block">
+                <div class="card mx-auto mt-3 cardshadow d-none  d-sm-none d-md-block">
                     <div class="card-header">
                         <span>เพื่อนที่โพสต์ </span>
                     </div>

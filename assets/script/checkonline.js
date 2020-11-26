@@ -1,14 +1,43 @@
 $(document).ready(function () {
     console.log("hey");
     updatestatus();
-
+    $('.btn_burger2').hide();
     setInterval(updatestatus, 180000); //180000
-
+    if ($(window).width() < 992) {
+        $('.burger').removeClass('d-non').addClass('d-block');
+    }
+    if ($(window).width() < 768) {
+        $('.burger').removeClass('d-non').addClass('d-block');
+        $(".ul-burger2").addClass('collapse')
+        $('.btn_burger2').fadeIn(1000)
+    }
+   
 });
+$(window).resize(function () {
+    let width = $(window).width(); // New width
+    let burger = $('.burger');
+    let ulburger2 = $(".ul-burger2");
+    let btn_burger2 = $('.btn_burger2');
+    if (width < 992) {
+        burger.removeClass('d-non').addClass('d-block');
+    } else {
+        burger.addClass('d-non').removeClass('d-block');
+    }
 
+    if (width < 768) {
+        btn_burger2.fadeIn(1000);
+        ulburger2.addClass('collapse')
+    } else {
+        btn_burger2.fadeOut(1000);
+        ulburger2.removeClass('collapse')
+    }
+});
+function responsivel() {
+
+}
 function updatestatus() {
     let rows = '';
-     $(".online_user").fadeOut('slow');
+    $(".online_user").fadeOut('slow');
     console.log("called");
     data = { currentjs_id, action: "updatestatus" }
     $.ajax({
@@ -24,13 +53,13 @@ function updatestatus() {
                 $.each(result.respond, function (k, v) {
                     let classgender;
                     let gender = { '1': 'women', '2': 'men', '3': 'genall', '4': 'gay', '5': 'indy', '6': 'tom', '7': 'less' };
-                    ((v.Description == null) ? " " : v.Description) ;
+                    ((v.Description == null) ? " " : v.Description);
                     $.each(gender, function (k1, v1) {
                         if (k1 == v.u_Gender_id) {
                             classgender = v1;
                         }
                     })
-                   
+
                     rows +=
                         `<div class='col-md-3 col-sm-12 online_user'>
                     <a href=''>
@@ -60,7 +89,7 @@ function updatestatus() {
                 </div>`
                 })
             }
-           
+
             $(".loopcontent_onlinepeople").append(rows);
         }
     });

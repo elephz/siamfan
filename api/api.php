@@ -289,7 +289,9 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 		$start = ($page - 1) * $limit;
 		// ORDER BY RAND ()
 
-		$oneuser = "SELECT TIMEDIFF(now(), tb_User.lastonline_time) as timediff,
+		$oneuser = "SELECT 
+						TIMESTAMPDIFF(MINUTE, lastonline_time,now()) AS diff,
+						TIMEDIFF(now(), tb_User.lastonline_time) as timediff,
 						DATEDIFF(now(), tb_User.lastonline_time) as daydiff,
 						tb_privacy.*,tb_gender.*,tb_target.*,tb_province.*,
 						tb_User.User_id,tb_User.Name,tb_User.line_id,
@@ -317,11 +319,14 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 		$amount = $count->num_rows;
 		$sql = mysqli_query($con, $oneuser) or die('error. ' . mysqli_error($con));
 		$arr = [];
-
+		$arr2= [];
 		while ($row = mysqli_fetch_assoc($sql)) {
+			$id2 = $row['User_id'];
+			$bullhorn = mysqli_query($con, "SELECT vote_id FROM `tb_vote` WHERE voted_id = '$id2'") or die('error. ' . mysqli_error($con));
+			array_push($arr2, $bullhorn->num_rows);
 			array_push($arr, $row);
 		}
-		$data = ['data' => $arr, 'amount' => $amount];
+		$data = ['data' => $arr, 'amount' => $amount, 'arr2' =>$arr2];
 		if ($count && $sql) {
 			success($data);
 		} else {
@@ -405,5 +410,52 @@ if (isset($_POST['action']) || isset($_POST['name'])) {
 		} else {
 			error();
 		}
-	}
+	} else if ($_POST['action'] == "voted-uer") {
+		$id = $con->real_escape_string($_POST['currentjs_id']);
+		$currentpage = $con->real_escape_string($_POST['currentpage']);
+		$start = 0;
+		$limit = 8;
+		$start = ($currentpage - 1) * $limit;
+		$sqlvote = "SELECT
+						TIMEDIFF(now(), tb_User.lastonline_time) as timediff,
+						DATEDIFF(now(), tb_User.lastonline_time) as daydiff,
+						tb_privacy.*,tb_gender.*,tb_target.*,tb_province.*,
+						tb_User.User_id,tb_User.Name,tb_User.line_id,
+						tb_User.facebook,tb_User.e_mail,tb_User.phone,
+						tb_User.u_Gender_id,tb_User.u_Province_id,
+						tb_User.u_Target_id,tb_User.age,
+						tb_User.Description,tb_User.view_count,
+						tb_User.img,tb_User.acc_status,
+						tb_User.created_date,tb_User.last_update,
+						tb_User.lastonline_time,
+						tb_vote.voter_id
+				FROM `tb_user`
+				LEFT join tb_vote ON tb_user.User_id = tb_vote.voter_id
+				INNER JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id
+				LEFT JOIN tb_gender ON tb_user.u_Gender_id = tb_gender.Gender_id
+				LEFT JOIN tb_target ON tb_user.u_Target_id = tb_target.Target_id
+				LEFT JOIN tb_province ON tb_user.u_Province_id = tb_province.Province_id
+				WHERE tb_vote.voted_id = '$id'
+				ORDER BY tb_User.last_update
+				LIMIT $start,$limit";
+		$count = mysqli_query($con, "SELECT vote_id FROM tb_vote WHERE voted_id = '$id'") or die('error. ' . mysqli_error($con));
+		$count->num_rows;
+		$qr = mysqli_query($con, $sqlvote) or die('error. ' . mysqli_error($con));
+		$arr = [];
+		$arr2 = [];
+	
+		while ($row = mysqli_fetch_assoc($qr)) {
+			$id2 = $row['User_id'];
+			$bullhorn = mysqli_query($con, "SELECT vote_id FROM `tb_vote` WHERE voted_id = '$id2'") or die('error. ' . mysqli_error($con));
+			array_push($arr, $row);
+			array_push($arr2, $bullhorn->num_rows);
+		}
+		$data = ['arr'=>$arr,'arr2'=>$arr2];
+		if ($qr) {
+			success($data,$count->num_rows);
+		} else {
+			error();
+		}
+
+	} 
 }
