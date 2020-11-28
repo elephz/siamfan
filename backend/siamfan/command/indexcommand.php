@@ -13,3 +13,6 @@ $banuse = mysqli_fetch_assoc($banuser);
 
 
 $reportuser = mysqli_query($con, "SELECT count(reported_id) as countuser FROM `tb_report` GROUP BY reported_id");
+
+
+$gender = mysqli_query($con, "SELECT * FROM `tb_gender` ");

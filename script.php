@@ -2,13 +2,28 @@
 include "api/config.php";
 
 exit;
+function generateRandomString($length = 10)
+{
+	$characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$charactersLength = strlen($characters);
+	$randomString = '';
+	for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[rand(0, $charactersLength - 1)];
+	}
+	return $randomString;
+}
  
  $random = rand(2018,2020)."-".rand(1,11)."-".rand(1,21)." ".rand(0,23).":".rand(1,59).":".rand(1,59);
+
+ 
+
  for ($i = 1; $i <= 50; $i++) {
 	$land2 = (rand(1, 50));
 	$land1 = (rand(50, 116));
 	$random2 = rand(2018,2020)."-".rand(1,11)."-".rand(1,10);
-	$sql = mysqli_query($con, "INSERT INTO `tb_vote`(`voter_id`,`voted_id`,`date`) VALUES ('$land1','$land2','$random2')");
+	$rantext =  generateRandomString();
+	$sql = mysqli_query($con, "INSERT INTO `tb_report`(`reporter_id`,`reported_id`,report_description,`date`) 
+							VALUES ('$land1','$land2','$rantext','$random2')");
 }
 
  // แอเรย์เก็บผลลัพท์ไว้ที่ key
@@ -99,14 +114,14 @@ $result = array_intersect($arr, $arr1);
 // echo "<pre>";
 // print_r($result, false);
 // echo "</pre>";
-function generateRandomString($length = 10)
-{
-	$characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$charactersLength = strlen($characters);
-	$randomString = '';
-	for ($i = 0; $i < $length; $i++) {
-		$randomString .= $characters[rand(0, $charactersLength - 1)];
-	}
-	return $randomString;
-}
+// function generateRandomString($length = 10)
+// {
+// 	$characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+// 	$charactersLength = strlen($characters);
+// 	$randomString = '';
+// 	for ($i = 0; $i < $length; $i++) {
+// 		$randomString .= $characters[rand(0, $charactersLength - 1)];
+// 	}
+// 	return $randomString;
+// }
 // echo generateRandomString();

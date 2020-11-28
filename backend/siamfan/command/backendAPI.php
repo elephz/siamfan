@@ -1,43 +1,64 @@
 <?php
 session_start();
-include($_SERVER['DOCUMENT_ROOT']."/siamfan/api/config.php");
+include $_SERVER['DOCUMENT_ROOT'] . "/siamfan/api/config.php";
 date_default_timezone_set("Asia/Bangkok");
 $today = date("Y-m-d");
 
-if ($_POST['action'] == "baned_user") {
+if ($_POST['action'] == "banuser") {
     $id = $con->real_escape_string($_POST['id']);
-    $sql = "UPDATE  `tb_user` SET `baned_use` = '1' WHERE `User_id` = '$id'";
-		$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
-		if ($qr) {
-			success();
+    $stt = $con->real_escape_string($_POST['stt']);
+    if($stt == '0'){
+        $stt = '1';
+    }else if($stt == '1'){
+        $stt = '0';
+    }
+	$sql = "UPDATE  `tb_user` SET `baned_use` = '$stt' WHERE `User_id` = '$id'";
+	$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+	if ($qr) {
+		success();
+	} else {
+		error();
+	}
+} else if ($_POST['action'] == "getalluser") {
+	$limit = 10;
+	$start = 0;
+	$page = 1;
+	$keyword = 'true';
+    $gender = 'true';
+    $ban = "tb_user.baned_use = '0'";
+	if (isset($_POST['limit'])) {
+		$limit = $con->real_escape_string($_POST['limit']);
+	}
+	if (isset($_POST['currentpage'])) {
+		$page = $con->real_escape_string($_POST['currentpage']);
+	}
+	if (isset($_POST['keyword'])) {
+		$keyword = $con->real_escape_string($_POST['keyword']);
+		$keyword = "'%" . $keyword . "%'";
+		$keyword = "tb_user.Name LIKE $keyword";
+    }
+    if (isset($_POST['ban'])) {
+        $ban_stt = $con->real_escape_string($_POST['ban']);
+        $ban = "tb_user.baned_use = '$ban_stt'";
+	}
+	if (isset($_POST['gender'])) {
+		$gender = $con->real_escape_string($_POST['gender']);
+		if ($gender == 0) {
+			$gender = 'true';
 		} else {
-			error();
+			$gender = "tb_user.u_Gender_id = '$gender'";
 		}
-}else if ($_POST['action'] == "getreport") {
-    $limit = 10;
-    $start = 0;
-    $page = 1;
-    $keyword = 'true';
-    if(isset($_POST['limit'])){
-        $limit = $con->real_escape_string($_POST['limit']);
-    }
-    if(isset($_POST['currentpage'])){
-        $page = $con->real_escape_string($_POST['currentpage']);
-    }
-    if(isset($_POST['keyword'])){
-        $keyword = $con->real_escape_string($_POST['keyword']);
-        $keyword = "'%".$keyword."%'";
-        $keyword = "tb_user.Name LIKE $keyword";
-    }
-    $start = ($page - 1) * $limit;
-    $sql2 = "SELECT User_id FROM tb_User ";
-    $qr2 = mysqli_query($con, $sql2) or die('error. ' . mysqli_error($con));    
-    //  if($limit == 100){
-    //      if($limit < $qr2->num_rows){
-    //          $limit = $qr2->num_rows;
-    //      }
-    //  }       
-    $sql = "SELECT 
+
+	}
+	$start = ($page - 1) * $limit;
+	$sql2 = "SELECT User_id FROM tb_User  WHERE $keyword AND  $gender AND $ban";
+	$qr2 = mysqli_query($con, $sql2) or die('error. ' . mysqli_error($con));
+	//  if($limit == 100){
+	//      if($limit < $qr2->num_rows){
+	//          $limit = $qr2->num_rows;
+	//      }
+	//  }
+	$sql = "SELECT
                     tb_privacy.*,tb_gender.*,tb_target.*,tb_province.*,
                     tb_User.User_id,tb_User.Name,tb_User.line_id,
                     tb_User.facebook,tb_User.e_mail,tb_User.phone,
@@ -46,69 +67,101 @@ if ($_POST['action'] == "baned_user") {
                     tb_User.Description,tb_User.view_count,
                     tb_User.img,tb_User.acc_status,
                     tb_User.created_date,tb_User.last_update,
-                    tb_User.lastonline_time
+                    tb_User.lastonline_time,tb_User.baned_use
                     FROM tb_User
                     INNER JOIN tb_privacy ON tb_user.User_id = tb_privacy.User_id
                     LEFT JOIN tb_gender ON tb_user.u_Gender_id = tb_gender.Gender_id
                     LEFT JOIN tb_target ON tb_user.u_Target_id = tb_target.Target_id
                     LEFT JOIN tb_province ON tb_user.u_Province_id = tb_province.Province_id
-            WHERE $keyword
+            WHERE $keyword AND  $gender AND $ban
             LIMIT $start,$limit";
-            
-        $qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
-        $arr = [];
-        while ($row = mysqli_fetch_assoc($qr)) {
-			array_push($arr, $row);
+	// echo $sql;
+	// exit;
+	$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+	$arr = [];
+	while ($row = mysqli_fetch_assoc($qr)) {
+		array_push($arr, $row);
+	}
+	$data = ["data" => $arr, "numrow" => $qr2->num_rows, "start" => $start, "limit" => $limit];
+	$message = $qr->num_rows;
+	if ($qr) {
+		success($data, $message);
+	} else {
+		error();
+	}
+} else if ($_POST['action'] == "getreport-detail") {
+	$id = $con->real_escape_string($_POST['id']);
+	$qr = mysqli_query($con, "SELECT tb_user.Name,tb_report.* FROM `tb_report`INNER JOIN tb_user on tb_report.reporter_id = tb_user.User_id WHERE reported_id = '$id'") or die('error. ' . mysqli_error($con));
+	$arr = [];
+	while ($row = mysqli_fetch_assoc($qr)) {
+		array_push($arr, $row);
+	}
+	if ($qr) {
+		success($arr);
+	} else {
+		error();
+	}
+} else if ($_POST['action'] == "getreport") {
+	$limit = 10;
+	$start = 0;
+	$page = 1;
+
+	if (isset($_POST['currentpage'])) {
+		$page = $con->real_escape_string($_POST['currentpage']);
+	}
+
+	$start = ($page - 1) * $limit;
+	$sql2 = "SELECT reported_id FROM tb_report  GROUP BY reported_id";
+	$qr2 = mysqli_query($con, $sql2) or die('error. ' . mysqli_error($con));
+
+	$sql = "SELECT tb_user.Name,tb_user.User_id,tb_user.created_date,COUNT(tb_user.User_id) as count
+            FROM tb_report
+            INNER JOIN tb_user on tb_report.reported_id = tb_user.User_id
+            GROUP BY tb_user.User_id
+            ORDER BY count DESC
+            LIMIT $start,$limit";
+
+	$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+	$arr = [];
+	while ($row = mysqli_fetch_assoc($qr)) {
+		array_push($arr, $row);
+	}
+	$data = ["data" => $arr, "numrow" => $qr2->num_rows, "start" => $start, "limit" => $limit];
+	$message = $qr->num_rows;
+	if ($qr) {
+		success($data, $message);
+	} else {
+		error();
+	}
+}else if ($_POST['action'] == "graph") {
+
+    $qr = mysqli_query($con, "SELECT DAYOFWEEK(lastonline_time) as day,lastonline_time,count(user_id) as count FROM tb_user WHERE DATE(lastonline_time) BETWEEN ((curdate()-INTERVAL 1 WEEK)+INTERVAL 1 DAY) AND curdate() OR DATE(lastonline_time) = curdate() GROUP BY day ORDER BY `tb_user`.`lastonline_time` asc") or die('error. ' . mysqli_error($con));
+    $arr = [];
+
+	while ($row = mysqli_fetch_assoc($qr)) {
+        $arr[$row['day']] = $row['count'];
+    }
+    for($i= 1; $i<=7 ; $i++){
+        if(!isset($arr[$i])){
+            $arr[$i] = 0;
         }
-        $data = ["data"=>$arr,"numrow"=>$qr2->num_rows];
-        $message = $qr->num_rows;
-        if ($qr) {
-			success($data,$message);
-		} else {
-			error();
-		}
-}else if ($_POST['action'] == "getreport-detail") {
-    $id = $con->real_escape_string($_POST['id']);
+    }
+    ksort($arr);
 
+    foreach($arr as $x=>$x_value) {
+        $aftersort[$x] = $x_value;
+        }
+	if ($qr) {
+		success($aftersort);
+	} else {
+		error();
+	}
 
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ }
 
 // $query = '';
 // $output = array();
-// $query = "SELECT * FROM tb_User 
+// $query = "SELECT * FROM tb_User
 //             LEFT JOIN tb_gender ON tb_user.u_Gender_id = tb_gender.Gender_id
 //             LEFT JOIN tb_target ON tb_user.u_Target_id = tb_target.Target_id
 //             LEFT JOIN tb_province ON tb_user.u_Province_id = tb_province.Province_id ";
@@ -149,4 +202,3 @@ if ($_POST['action'] == "baned_user") {
 //     "data" => $data
 // );
 // echo json_encode($output);
-

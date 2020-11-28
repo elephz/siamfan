@@ -10,10 +10,13 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css" integrity="sha512-f8gN/IhfI+0E9Fc/LKtjVq4ywfhYAVeMGKsECzDUHcFJ5teVwvKTqizm+5a84FINhfrgdvjX8hEJbem2io1iTA==" crossorigin="anonymous" />
-
+  <link rel="stylesheet" href="css/csscustom.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -88,25 +91,17 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">ตารางสมาชิกทั้งหมด</h3><br>
-                <input type="text" id="search" class='form-control w-25 d-inline-block float-left'>
-                <select name="" id="limit" class='form-control w-25 d-inline-block float-right limit'>
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
+                <h3 class="card-title">ตารางรายงานสมาชิก</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body ">
-                <table id="example" class="table table-bordered table-striped ">
+                <table id="example" class="table">
                   <thead>
                   <tr>
                     <th>รหัสสมาชิก</th>
                     <th>ชื่อ</th>
-                    <th>เพศ</th>
-                    <th>อายุ</th>
-                    <th>สมัครเมื่อ</th>
+                    <th>เข้าร่วมเมื่อ</th>
+                    <th>จำนวนครั้งที่ถูกรายงาน</th>
                     <th>รายละเอียด</th>
                   </tr>
                   </thead>
@@ -150,10 +145,12 @@
                     <h4 class="modal-title">รายละเอียดการรายงาน</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="row row-modal-body">
                     
+                    </div>
                 </div>
-                <div class="mocal-footer">
-                    
+                <div class="modal-footer">
+                   
                 </div>
             </div>
         </div>
@@ -179,59 +176,29 @@
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous"></script>
 
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script src="asstes/script/report.js"></script>
 <!-- Page specific script -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js" integrity="sha512-MqEDqB7me8klOYxXXQlB4LaNf9V9S0+sG1i8LtPOYmHqICuEZ9ZLbyV3qIfADg2UJcLyCm4fawNiFvnYbcBJ1w==" crossorigin="anonymous"></script>
-<script src="asstes/script/report.js"></script>
-
 <script>
  $(document).ready(function() {
-     
+     console.log("ddd");
+ 
 
-    $('#example tbody').on( 'click', 'button', function () {
-    var data = table.row( $(this).parents('tr') ).data();
-    let id = data[0];
-    let name = data[1];
-    swal({
-            title: "",
-            text: "ต้องการระงับการใช้งานคุณ"+name+"ใช่หรือไม่",
-            type: "info",
-            showCancelButton: true,
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-        },
-            function () {
-                setTimeout(function () {
-                data={id,action:"baned_user"}
-                $.ajax({
-                type: "POST",
-                url: "command/backendAPI.php",
-                data: data,
-                dataType: 'json',
-                cache: false,
-                success: function (result) {
-                console.log(result);
-                if (result.status) {
-                    swal("บันทึกสำเร็จ", "", "success");
-                }
-            }
-        }, 500);
-        });
-            }
-        );
-    } );
+   
+    
 
 
 
 
 
-
-    // $('#example').DataTable( {
+    
+    // $('#example').DataTable( { 
     //     "padding":true,
     //     "processing":true,
     //     "serverSide":true,

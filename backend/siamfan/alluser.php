@@ -1,3 +1,4 @@
+<?php include "command/indexcommand.php";?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,13 +11,11 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- DataTables -->
-  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css" integrity="sha512-f8gN/IhfI+0E9Fc/LKtjVq4ywfhYAVeMGKsECzDUHcFJ5teVwvKTqizm+5a84FINhfrgdvjX8hEJbem2io1iTA==" crossorigin="anonymous" />
-
+  <link rel="stylesheet" href="css/csscustom.css">
+  
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -62,7 +61,16 @@
 
   <!-- Main Sidebar Container -->
   <?php include 'aside.php';?>
-
+<?php
+ echo '<script type="text/javascript">';
+ echo "var page = 'p';";
+ echo '</script>';
+if(isset($_GET['p'])){
+  $p = $_GET['p'];
+  echo '<script type="text/javascript">';
+  echo "page = '$p';";
+  echo '</script>';
+} ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -70,7 +78,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>DataTables</h1>
+            <h1>ตารางสมาชิกทั้งหมด</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -89,33 +97,79 @@
           <div class="col-12">
 
 
-            <div class="card w-75 mx-auto">
+            <div class="card">
               <div class="card-header">
-                <h3 class="card-title">DataTable with default features</h3>
+                <form>
+                  <div class="form-row">
+
+                    <div class="form-group col-md-2">
+                      <label for="inputEmail4">ค้นหาตามรายชื่อ</label>
+                      <input type="text" placeholder ="ค้นหาตามรายชื่อ" id="search" class='form-control '>
+                    </div>
+                    <div class="form-group col-md-3"></div>
+                    <div class="form-group col-md-3"></div>
+                   
+                    <div class="form-group col-md-2">
+                      <label for="inputPassword4">แสดงตามเพศ</label>
+                      <select name=""  class='form-control gender'>
+                      <option value="0">เลือกทั้งหมด</option>
+                      <?php  while ($gerderlist = mysqli_fetch_assoc($gender)) {?>
+                        <option value="<?php echo $gerderlist['Gender_id'] ?>"><?php echo $gerderlist['Gender_name'] ?></option>
+                      <?php } ?>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-1">
+                      <label for="inputPassword4">รายการ</label>
+                      <select name=""  class='form-control limit'>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    </div>
+                    <div class="form-group col-md-1 text-right ">
+                    <label for="inputPassword4">ระงับการใช้งาน</label>
+                      <label class='switch '>
+                            <input type='checkbox' check='false'  class='switch2'  >
+                            <span class='slider'></span>
+                        </label>
+                    </div>
+                  </div>
+                </form>
+                
+                
+                
               </div>
               <!-- /.card-header -->
               <div class="card-body ">
-                <table id="example" class="table table-bordered table-striped ">
+                <table id="example"  class="table">
                   <thead>
                   <tr>
                     <th>รหัสสมาชิก</th>
                     <th>ชื่อ</th>
-                    <th>เข้าร่วมเมื่อ</th>
+                    <th>เพศ</th>
+                    <th>อายุ</th>
+                    <th>สมัครเมื่อ</th>
                     <th>ระงับการใช้งาน</th>
                   </tr>
                   </thead>
                   <tbody>
 
                   </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                  </tr>
-                  </tfoot>
                 </table>
+              </div>
+              <div class="card-footer">
+                <div class="row pagination-row d-inline-block">
+                  <nav aria-label="Page navigation example">
+                      <ul class="pagination">
+                          <li class="page-item previous"><a class="page-link btn-control" control='left' href="#">Previous</a></li>
+
+                          <li class="page-item"><a class="page-link btn-control" control='right' href="#">Next</a></li>
+                      </ul>
+                  </nav>
+                </div>
+                <div class='text-right float-right d-inline-block'>Showing <span id='start' ></span> to <span id='end' ></span> of <span id='total' ></span> entries</div>
+                <div class="clearfix"></div>
               </div>
               <!-- /.card-body -->
             </div>
@@ -130,6 +184,24 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <!-- modal -->
+  <div class="modal fade" id="report">
+  <!-- modal-lg -->
+        <div class="modal-dialog "> 
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">รายละเอียดการรายงาน</h4>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="mocal-footer">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- modal -->
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.1.0-rc
@@ -149,19 +221,7 @@
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="../plugins/jszip/jszip.min.js"></script>
-<script src="../plugins/pdfmake/pdfmake.min.js"></script>
-<script src="../plugins/pdfmake/vfs_fonts.js"></script>
-<script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
 
 
 <!-- AdminLTE App -->
@@ -170,79 +230,9 @@
 <script src="../dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js" integrity="sha512-MqEDqB7me8klOYxXXQlB4LaNf9V9S0+sG1i8LtPOYmHqICuEZ9ZLbyV3qIfADg2UJcLyCm4fawNiFvnYbcBJ1w==" crossorigin="anonymous"></script>
-<script>
- $(document).ready(function() {
-     console.log("ddd");
-     var table = $('#example').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "responsive": true,
-        "ajax": "asstes/server_side/scripts/server_processing.php",
-        "columnDefs": [ {
-            "targets": -1,
-            "data": null,
-            "defaultContent": "<button type='button' class='btn btn-primary'>Click!</button>"
-    } ]
-        // C:\xampp\htdocs\siamfan\backend\siamfan\asstes\server_side\scripts\server_processing.php
-    } );
 
-   
-    $('#example tbody').on( 'click', 'button', function () {
-    var data = table.row( $(this).parents('tr') ).data();
-    let id = data[0];
-    let name = data[1];
-    swal({
-            title: "",
-            text: "ต้องการระงับการใช้งานคุณ"+name+"ใช่หรือไม่",
-            type: "info",
-            showCancelButton: true,
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-        },
-            function () {
-                setTimeout(function () {
-                data={id,action:"baned_user"}
-                $.ajax({
-                type: "POST",
-                url: "command/backendAPI.php",
-                data: data,
-                dataType: 'json',
-                cache: false,
-                success: function (result) {
-                console.log(result);
-                if (result.status) {
-                    swal("บันทึกสำเร็จ", "", "success");
-                }
-            }
-        }, 500);
-        });
-            }
-        );
-    } );
+<script src="asstes/script/alluser.js"></script>
 
 
-
-
-
-    
-    // $('#example').DataTable( { 
-    //     "padding":true,
-    //     "processing":true,
-    //     "serverSide":true,
-    //     "order":[],
-    //     "info":true,
-    //     "ajax":{
-    //         url:"command/backendAPI.php",
-    //         type:"POST"
-    //     },
-    //     "columnDefs":[
-    //         {
-    //             "target":[0,3,4],
-    //             "orderable":false,
-    //         },
-    //     ],
-    // });
-} );
-</script>
 </body>
 </html>

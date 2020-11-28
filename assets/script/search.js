@@ -147,11 +147,9 @@ function run(typepara, data) {
     $("body").on("click", ".btn-control", function (e) {
         e.preventDefault();
         currentpage = Number(currentpage);
-        console.log(totalpage);
         let val = $(this).attr("control");
-        console.log(val);
-        if (val == 'left') { currentpage--; console.log("left"); };
-        if (val == 'right') { currentpage++; console.log("right"); };
+        if (val == 'left') { currentpage--;  };
+        if (val == 'right') { currentpage++;  };
         console.log(currentpage);
         if (currentpage <= 0) {
             currentpage = 1;

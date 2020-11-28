@@ -4,15 +4,14 @@ $(document).ready(function () {
 function run() {
     var monthNamesThai = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
     let rows = '';
-    let limit = 10;
     let total1;
     let currentpage = 1;
-    let keyword;
+ 
     getdata();
     function getdata() {
         rows = '';
 
-        data = { limit, currentpage,keyword, action: "getreport" }
+        data = {  currentpage, action: "getreport" }
         $.ajax({
             type: "POST",
             url: "command/backendAPI.php",
@@ -23,8 +22,8 @@ function run() {
                 console.log(result);
                 total1 = result.respond.numrow;
                 Number(result.message) * Number(currentpage)
-                $("#end").html(Number(result.message) * Number(currentpage));
-                $("#start").html((Number(result.message) * Number(currentpage))-Number(result.message));
+                // $("#start").html(Number(result.respond.start) - Number(result.message));
+                // $("#end").html(result.respond.start);
                $("#total").html(total1);
                     writepagi(total1);
                 // if(result.message < limit){
@@ -49,10 +48,9 @@ function run() {
                         rows += `<tr class='row_td'>
                             <td>${mid}</td>
                             <td>${v.Name}</td>
-                            <td>${v.Gender_name}</td>
-                            <td>${v.age}</td>
                             <td>${date}</td>
-                            <td><button type='button' uid='${v.User_id}' class='btn btn-default detail'>รายละเอียด</button></td>
+                            <td>${v.count}</td>
+                            <td><button type='button' uid='${v.User_id}' uname='${v.Name}' class='btn btn-default detail'>รายละเอียด</button></td>
                         </tr>`;
                         i++;
                     });
@@ -66,24 +64,13 @@ function run() {
             }
         });
     }
-    $("body").on("change", ".limit", function (e) {
-        limit = $(this).val();
-        rows = '';
-        currentpage = 1;
-        $("tr.row_td").fadeOut('500');
-        getdata();
-        writepagi(total1)
-    });
+   
     
-    $("body").on("keyup", "#search", function (e) {
-        keyword  = $(this).val();
-        getdata();
-        currentpage = 1;
-    });
+    
     function writepagi(total) {
         paginationtext = " ";
         $("[page]").empty();
-        let page = total / limit;
+        let page = total / 10;
         page = Math.ceil(page);
         totalpage = page;
         for (let i = 1; i <= page; i++) {
@@ -134,9 +121,12 @@ function run() {
         getdata();
     })
 }
-
+let rows = '';
 $("body").on("click", ".detail", function (e) {
-  
+    var monthNamesThai = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+    rows = '';
+    // $('.content-report').fadeOut(1000);
+    $('.content-report').empty();
   $('#report').modal('show');
   let id = $(this).attr("uid");
   data = {id,action:"getreport-detail"}
@@ -147,7 +137,56 @@ $("body").on("click", ".detail", function (e) {
     dataType: 'json',
     cache: false,
     success: function (result) {
-
+            let data = result.respond;
+            $.each(data, function (k, v) { 
+                var d = new Date(v.date);
+                let date = d.getDate() + " " + monthNamesThai[d.getMonth()] + " " + (d.getFullYear() + 543);
+                rows+=
+            ` <div class="col-12 content-report">
+                <div class="card w-100" >
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">สาเหตุ : ${v.report_description}</li>
+                    <li class="list-group-item">วันที่ : ${date}</li>
+                    <li class="list-group-item">ผู้รายงาน : ${v.Name}</li>
+                  </ul>
+                </div>
+              </div>`;
+            });
+            $('.row-modal-body').append(rows).fadeIn(1000);
      }
   });
 })
+
+// $('#example tbody').on( 'click', 'button', function () {
+//     let table = $("#example");
+//     var data = table.row( $(this).parents('tr') ).data();
+//     let id = data[0];
+//     let name = data[1];
+//     swal({
+//             title: "",
+//             text: "ต้องการระงับการใช้งานคุณ"+name+"ใช่หรือไม่",
+//             type: "info",
+//             showCancelButton: true,
+//             closeOnConfirm: false,
+//             showLoaderOnConfirm: true
+//         },
+//             function () {
+//                 setTimeout(function () {
+//                 data={id,action:"baned_user"}
+//                 $.ajax({
+//                 type: "POST",
+//                 url: "command/backendAPI.php",
+//                 data: data,
+//                 dataType: 'json',
+//                 cache: false,
+//                 success: function (result) {
+//                 console.log(result);
+//                 if (result.status) {
+//                     swal("บันทึกสำเร็จ", "", "success");
+//                 }
+//             }
+//         }, 500);
+//         });
+//             }
+//         );
+//     } );

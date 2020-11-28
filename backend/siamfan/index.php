@@ -17,16 +17,17 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- JQVMap -->
-  <link rel="stylesheet" href="../plugins/jqvmap/jqvmap.min.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+ 
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
+
   <!-- summernote -->
-  <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+  
   <link rel="stylesheet" href="css/csscustom.css">
+  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -109,7 +110,7 @@
               <div class="icon">
                   <i class="fas fa-user-friends"></i>
               </div>
-              <a href="#" class="small-box-footer">เพิ่มเติม <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="alluser?p=all" class="small-box-footer">เพิ่มเติม <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -138,7 +139,7 @@
               <div class="icon">
                 <i class="fas fa-address-card"></i>
               </div>
-              <a href="#" class="small-box-footer">เพิ่มเติม <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="report" class="small-box-footer">เพิ่มเติม <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -152,7 +153,7 @@
               <div class="icon">
                 <i class="fas fa-user-slash"></i>
               </div>
-              <a href="#" class="small-box-footer">เพิ่มเติม <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="alluser?p=block" class="small-box-footer">เพิ่มเติม <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -167,9 +168,9 @@
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="fas fa-chart-pie mr-1"></i>
-                  Sales
+                  รายงานการเข้าสู่ระบบ
                 </h3>
-                <div class="card-tools">
+                <!-- <div class="card-tools">
                   <ul class="nav nav-pills ml-auto">
                     <li class="nav-item">
                       <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
@@ -178,19 +179,10 @@
                       <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
                     </li>
                   </ul>
-                </div>
+                </div> -->
               </div><!-- /.card-header -->
               <div class="card-body">
-                <div class="tab-content p-0">
-                  <!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart"
-                       style="position: relative; height: 300px;">
-                      <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                   </div>
-                  <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                    <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-                  </div>
-                </div>
+                <canvas id="graphCanvas" class='w-100'></canvas>
               </div><!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -586,6 +578,7 @@
               </div>
               <div class="card-body">
                 <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <canvas id="myChart" width="400" height="400"></canvas>
               </div>
               <!-- /.card-body -->
               <div class="card-footer bg-transparent">
@@ -687,34 +680,82 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
+
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="../plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="../plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="../plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="../plugins/moment/moment.min.js"></script>
-<script src="../plugins/daterangepicker/daterangepicker.js"></script>
+
+
+
+
+
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="../plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+
+
+
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="../dist/js/pages/dashboard.js"></script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+
+$(document).ready(function(){
+  showGraph();
+function showGraph(){
+    {
+      var dayThai = ["อาทิตย์","จันทร์","อังคาร","พุทธ","พฤหัส","ศุกร์","เสาร์"];
+      data = {action:"graph"}
+      $.ajax({
+            type: "POST",
+            url: "command/backendAPI.php",
+            data: data,
+            dataType: 'json',
+            cache: false,
+            success: function (result) { 
+            let name = [];
+            let score = [];
+            let data = result.respond;
+            let o =1;
+            // $.each(dayobg,function(k,v){
+            //     console.log(k,v);
+               
+            //   o++;
+            // });
+          
+            $.each(data,function(k,v){
+                var d = new Date(k);
+                name.push(dayThai[d.getMonth()]);
+                score.push(v);
+            });
+            console.log(score);
+            console.log(name);
+            let i = 0;
+            console.log(score);
+            console.log(name);
+            let chartdata = {
+                labels: name,
+                datasets: [{
+                        label: 'จำนวนผู้เข้าใช้งาน(ที่ไม่ซ้ำกัน)',
+                        backgroundColor: '#102526',
+                        borderColor: '#666',
+                        hoverBackgroundColor: '#0d0d0d',
+                        hoverBorderColor: '#666666',
+                        data: score
+                }]
+            };
+
+            let graphTarget = $('#graphCanvas');
+            let barGraph = new Chart(graphTarget, {
+                type: 'bar',
+                data: chartdata,
+            })
+            } });
+    }
+}
+});
+</script>
 </body>
 </html>

@@ -27,10 +27,20 @@ function run() {
 
     $("body").on("click", ".report", function (e) {
         e.preventDefault();
+        if (currentjs_id == null) {
+            swal("", "เฉพาะสมาชิกเท่านั้น", "error");
+            return
+        }
         $('#report').modal('show');
     });
     $("body").on("click", ".bullhorn", function (e) {
         currentjs_id
+        console.log(currentjs_id);
+
+        if (currentjs_id == null) {
+            swal("", "เฉพาะสมาชิกเท่านั้น", "error");
+            return
+        }
         data = { currentjs_id, member_id, action: "vote-user" }
         $.ajax({
             type: "POST",
