@@ -64,3 +64,14 @@
   .modal-body{
     overflow-y: auto;
   }
+  a.float-right{
+    color:black;
+    
+  }
+  li.collapse{
+    list-style: none;
+    
+  }
+  .logout{
+    cursor: pointer;
+  }

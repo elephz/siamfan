@@ -2,7 +2,7 @@
 include "api/config.php";
 
 exit;
-function generateRandomString($length = 10)
+function generateRandomString($length = 30)
 {
 	$characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	$charactersLength = strlen($characters);
@@ -13,17 +13,18 @@ function generateRandomString($length = 10)
 	return $randomString;
 }
  
- $random = rand(2018,2020)."-".rand(1,11)."-".rand(1,21)." ".rand(0,23).":".rand(1,59).":".rand(1,59);
+ 
 
  
 
- for ($i = 1; $i <= 50; $i++) {
-	$land2 = (rand(1, 50));
-	$land1 = (rand(50, 116));
-	$random2 = rand(2018,2020)."-".rand(1,11)."-".rand(1,10);
-	$rantext =  generateRandomString();
-	$sql = mysqli_query($con, "INSERT INTO `tb_report`(`reporter_id`,`reported_id`,report_description,`date`) 
-							VALUES ('$land1','$land2','$rantext','$random2')");
+ for ($i = 50; $i <= 90; $i++) {
+	// $land2 = (rand(1, 50));
+	$random = rand(2018,2020)."-".rand(1,11)."-".rand(25,29)." ".rand(0,23).":".rand(1,59).":".rand(1,59);
+	$random3 = "2020-11-".rand(25,29)." ".rand(0,23).":".rand(1,59).":".rand(1,59);
+	$land1 = (rand(50, 100));
+	// $random2 = rand(2018,2020)."-".rand(1,11)."-".rand(1,10);
+	// $rantext =  generateRandomString();
+	$sql = mysqli_query($con, "UPDATE `tb_user` SET lastonline_time = '$random3' WHERE User_id  = '$i'");
 }
 
  // แอเรย์เก็บผลลัพท์ไว้ที่ key

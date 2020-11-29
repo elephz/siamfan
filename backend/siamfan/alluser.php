@@ -1,4 +1,7 @@
 <?php include "command/indexcommand.php";?>
+<?php if (isset($_SESSION["admin_id"])) { 
+    $adminnamd = $_SESSION["admin_name"];
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +54,7 @@
       <!-- Messages Dropdown Menu -->
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+        <a class="nav-link logout">
           <i class="fas fa-power-off"></i>
         </a>
       </li>
@@ -232,7 +235,11 @@ if(isset($_GET['p'])){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js" integrity="sha512-MqEDqB7me8klOYxXXQlB4LaNf9V9S0+sG1i8LtPOYmHqICuEZ9ZLbyV3qIfADg2UJcLyCm4fawNiFvnYbcBJ1w==" crossorigin="anonymous"></script>
 
 <script src="asstes/script/alluser.js"></script>
+<script src="asstes/script/logout.js"></script>
 
 
 </body>
 </html>
+<?php  }else{
+   header("Location: login.php ");
+} ?>

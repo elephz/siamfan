@@ -91,7 +91,7 @@ if ($_POST['action'] == "banuser") {
 	}
 } else if ($_POST['action'] == "getreport-detail") {
 	$id = $con->real_escape_string($_POST['id']);
-	$qr = mysqli_query($con, "SELECT tb_user.Name,tb_report.* FROM `tb_report`INNER JOIN tb_user on tb_report.reporter_id = tb_user.User_id WHERE reported_id = '$id'") or die('error. ' . mysqli_error($con));
+	$qr = mysqli_query($con, "SELECT tb_user.Name,tb_report.* FROM `tb_report`LEFT JOIN tb_user on tb_report.reporter_id = tb_user.User_id WHERE reported_id = '$id'") or die('error. ' . mysqli_error($con));
 	$arr = [];
 	while ($row = mysqli_fetch_assoc($qr)) {
 		array_push($arr, $row);
@@ -116,8 +116,8 @@ if ($_POST['action'] == "banuser") {
 
 	$sql = "SELECT tb_user.Name,tb_user.User_id,tb_user.created_date,COUNT(tb_user.User_id) as count
             FROM tb_report
-            INNER JOIN tb_user on tb_report.reported_id = tb_user.User_id
-            GROUP BY tb_user.User_id
+            LEFT JOIN tb_user on tb_report.reported_id = tb_user.User_id
+            GROUP BY tb_report.reported_id
             ORDER BY count DESC
             LIMIT $start,$limit";
 
@@ -157,8 +157,65 @@ if ($_POST['action'] == "banuser") {
 		error();
 	}
 
- }
+ }else if ($_POST['action'] == "register") { 
+	$name = $con->real_escape_string($_POST['name']);
+	$email = $con->real_escape_string($_POST['email']);
+	$psw = $con->real_escape_string($_POST['psw']);
+	$sql = "INSERT INTO `tb_admin`(`name`,`e_mail`,`password`,`created_date`) VALUES ('$name','$email','$psw',now())";
+	$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+	if ($qr) {
+		success();
+	} else {
+		error();
+	}
+  }
+  else if ($_POST['action'] == "login") {
+	$username = $con->real_escape_string($_POST['username']);
+	$password = $con->real_escape_string($_POST['password']);
 
+	$sql = "SELECT admin_id,`name`,`e_mail`,`password`,`status` FROM `tb_admin` WHERE `e_mail`='$username' AND `password` = '$password'";
+	$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+	$row = mysqli_fetch_assoc($qr);
+	if ($qr->num_rows >= 1 && $row['status'] == '1') {
+		$_SESSION["admin_id"] = $row["admin_id"];
+		$_SESSION["admin_name"] = $row["name"];
+		$adminid = $row["admin_id"];
+		$qr2 = mysqli_query($con, "UPDATE tb_admin SET lastes_login = now() WHERE admin_id = '$adminid'") or die('error. ' . mysqli_error($con));
+
+		if($qr2){
+			success();
+		}
+	}else if($qr->num_rows >= 1 && $row['status'] == '0' ){
+		error('wait');
+		exit;
+	} else {
+		error();
+	}
+}else if ($_POST['action'] == "judadmin") { 
+	$id = $con->real_escape_string($_POST['id']);
+	$jud = $con->real_escape_string($_POST['jud']);
+	$sql = "";
+	if($jud == 'no'){
+		$sql = "DELETE FROM tb_admin WHERE admin_id = '$id'";
+	}else if($jud == 'yes'){
+		$sql = "UPDATE tb_admin SET status = '1' WHERE admin_id = '$id'";
+	}
+	$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+	if ($qr) {
+		success();
+	} else {
+		error();
+	}
+  }else if ($_POST['action'] == "delete-report") { 
+	$id = $con->real_escape_string($_POST['id']);
+	$sql = "DELETE FROM tb_report WHERE reported_id = '$id'";
+	$qr = mysqli_query($con, $sql) or die('error. ' . mysqli_error($con));
+	if ($qr) {
+		success();
+	} else {
+		error();
+	}
+  } 
 // $query = '';
 // $output = array();
 // $query = "SELECT * FROM tb_User

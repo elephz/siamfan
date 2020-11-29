@@ -50,7 +50,10 @@ function run() {
                             <td>${v.Name}</td>
                             <td>${date}</td>
                             <td>${v.count}</td>
-                            <td><button type='button' uid='${v.User_id}' uname='${v.Name}' class='btn btn-default detail'>รายละเอียด</button></td>
+                            <td>
+                                <button type='button' uid='${v.User_id}'  class='btn btn-info detail'><i class="fas fa-info-circle"></i></button>
+                                <button type='button' uid='${v.User_id}'  class='btn btn-danger delete'><i class="fas fa-trash-alt"></i></button>
+                            </td>
                         </tr>`;
                         i++;
                     });
@@ -145,7 +148,14 @@ $("body").on("click", ".detail", function (e) {
             ` <div class="col-12 content-report">
                 <div class="card w-100" >
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item">สาเหตุ : ${v.report_description}</li>
+                    <li class="list-group-item">
+                        สาเหตุ : ${v.report_description} 
+                        <a class='float-right' data-toggle="collapse" href="#collapseExample${v.report_id}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fas fa-bars"></i>
+                        </a> 
+                     <div class='clear-fix'></div>
+                    <li class="collapse" id="collapseExample${v.report_id}"> <span class='m-3'>${v.reason}</span></li>
+                    </li>
                     <li class="list-group-item">วันที่ : ${date}</li>
                     <li class="list-group-item">ผู้รายงาน : ${v.Name}</li>
                   </ul>
@@ -156,7 +166,25 @@ $("body").on("click", ".detail", function (e) {
      }
   });
 })
-
+$("body").on("click", ".delete", function (e) {
+    let id = $(this).attr("uid");
+    data = {id,action:"delete-report"}
+    let tr = $(this).closest('tr');
+    $.ajax({
+        type: "POST",
+        url: "command/backendAPI.php",
+        data: data,
+        dataType: 'json',
+        cache: false,
+        success: function (result) { 
+        if(result.status){
+            tr.fadeOut(1000);
+            }else{
+           console.log("error");
+            }
+        }
+     });
+ });
 // $('#example tbody').on( 'click', 'button', function () {
 //     let table = $("#example");
 //     var data = table.row( $(this).parents('tr') ).data();

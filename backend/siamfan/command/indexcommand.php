@@ -16,3 +16,15 @@ $reportuser = mysqli_query($con, "SELECT count(reported_id) as countuser FROM `t
 
 
 $gender = mysqli_query($con, "SELECT * FROM `tb_gender` ");
+
+$admin = mysqli_query($con, "SELECT * FROM `tb_admin` WHERE status = '0'");
+
+function DateThai($strDate)
+	{
+		$strYear = date("Y",strtotime($strDate))+543;
+		$strMonth= date("n",strtotime($strDate));
+		$strDay= date("j",strtotime($strDate));
+		$strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
+		$strMonthThai=$strMonthCut[$strMonth];
+		return "$strDay $strMonthThai $strYear";
+	}
